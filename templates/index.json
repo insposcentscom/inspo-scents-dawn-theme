@@ -1,56 +1,5 @@
 {
   "sections": {
-    "inspo_hero": {
-      "type": "rich-text",
-      "blocks": {
-        "eyebrow": {
-          "type": "caption",
-          "settings": {
-            "caption": "INSPO SCENTS · 50 ML EAU DE PARFUM",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "medium"
-          }
-        },
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Luxury-inspired scents. <em>Without the luxury price.</em>",
-            "heading_size": "hxl"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Discover expressive 50 ml fragrances crafted to make an unforgettable impression—each only $39.99.</p>"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop 50 ml fragrances",
-            "button_link": "shopify://collections/50-ml-fragrances",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "eyebrow",
-        "heading",
-        "text",
-        "button"
-      ],
-      "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "scheme-4",
-        "full_width": true,
-        "padding_top": 100,
-        "padding_bottom": 100
-      }
-    },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
@@ -117,10 +66,58 @@
         "padding_top": 72,
         "padding_bottom": 72
       }
+    },
+    "fragrance_banner": {
+      "type": "image-banner",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Luxury-inspired scents. <em>Without the luxury price.</em>",
+            "heading_size": "hxl"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "Fruity brightness. Woody depth. An unforgettable signature.",
+            "text_style": "subtitle"
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Shop 50 ml fragrances",
+            "button_link_1": "shopify://collections/50-ml-fragrances",
+            "button_style_secondary_1": false,
+            "button_label_2": "Explore the collection",
+            "button_link_2": "shopify://collections/50-ml-fragrances",
+            "button_style_secondary_2": true
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "buttons"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/inspo-scents-fruity-woody-hero.png",
+        "image_overlay_opacity": 20,
+        "image_height": "large",
+        "image_behavior": "ambient",
+        "desktop_content_position": "middle-left",
+        "show_text_box": false,
+        "desktop_content_alignment": "left",
+        "color_scheme": "scheme-4",
+        "mobile_content_alignment": "left",
+        "stack_images_on_mobile": false,
+        "show_text_below": true
+      }
     }
   },
   "order": [
-    "inspo_hero",
+    "fragrance_banner",
     "featured_collection",
     "brand_promise"
   ]
