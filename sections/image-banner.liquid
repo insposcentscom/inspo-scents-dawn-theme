@@ -29,6 +29,47 @@
   }
 {%- endstyle -%}
 
+{%- style -%}
+  #Banner-{{ section.id }} .banner__flare {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  #Banner-{{ section.id }} .banner__flare::before {
+    content: '';
+    position: absolute;
+    top: -35%;
+    left: -30%;
+    width: 36%;
+    height: 170%;
+    background: linear-gradient(105deg, transparent 15%, rgba(255, 219, 145, 0.08) 42%, rgba(255, 231, 177, 0.42) 50%, rgba(255, 219, 145, 0.08) 58%, transparent 85%);
+    filter: blur(18px);
+    transform: translateX(-160%) rotate(8deg);
+    animation: inspo-banner-flare 7s ease-in-out infinite;
+  }
+
+  #Banner-{{ section.id }} .banner__content {
+    z-index: 3;
+  }
+
+  @keyframes inspo-banner-flare {
+    0%, 18% { transform: translateX(-160%) rotate(8deg); opacity: 0; }
+    28% { opacity: 0.75; }
+    62% { transform: translateX(430%) rotate(8deg); opacity: 0.45; }
+    72%, 100% { transform: translateX(430%) rotate(8deg); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #Banner-{{ section.id }} .banner__flare::before {
+      animation: none;
+      opacity: 0;
+    }
+  }
+{%- endstyle -%}
+
 {%- liquid
   assign full_width = '100vw'
   assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
@@ -55,6 +96,7 @@
   id="Banner-{{ section.id }}"
   class="banner banner--content-align-{{ section.settings.desktop_content_alignment }} banner--content-align-mobile-{{ section.settings.mobile_content_alignment }} banner--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} banner--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} banner--adapt{% endif %}{% if section.settings.show_text_below %} banner--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} banner--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
 >
+  <span class="banner__flare" aria-hidden="true"></span>
   {%- if section.settings.image != blank -%}
     <div class="banner__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} banner__media-half{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
       {%- liquid
