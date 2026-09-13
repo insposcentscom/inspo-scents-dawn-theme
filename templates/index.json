@@ -103,7 +103,7 @@
       ],
       "settings": {
         "image": "shopify://shop_images/inspo-scents-fruity-woody-hero.png",
-        "image_overlay_opacity": 20,
+        "image_overlay_opacity": 30,
         "image_height": "large",
         "image_behavior": "ambient",
         "desktop_content_position": "middle-left",
