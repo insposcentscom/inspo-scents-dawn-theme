@@ -2,48 +2,18 @@
   "sections": {
     "fragrance_banner": {
       "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Scent, reimagined",
-            "heading_size": "hxl"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "Fruity brightness. Fresh energy. Woody depth.",
-            "text_style": "subtitle"
-          }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all fragrances",
-            "button_link_1": "shopify://collections/50-ml-fragrances",
-            "button_style_secondary_1": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": true
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text",
-        "buttons"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
-        "image": "shopify://shop_images/inspo-scents-three-bottle-accords-hero.png",
-        "image_overlay_opacity": 10,
-        "image_height": "small",
+        "image": "shopify://shop_images/inspo-scents-oil-filled-accords-banner.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
         "image_behavior": "none",
-        "desktop_content_position": "middle-left",
+        "desktop_content_position": "middle-center",
         "show_text_box": false,
-        "desktop_content_alignment": "left",
+        "desktop_content_alignment": "center",
         "color_scheme": "scheme-4",
-        "mobile_content_alignment": "left",
+        "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
         "show_text_below": false
       }
