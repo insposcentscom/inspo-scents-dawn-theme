@@ -14,7 +14,7 @@
 
     assign mens_collection = section.settings.mens_collection
     if mens_collection == blank
-      assign mens_collection = collections['men']
+      assign mens_collection = collections['men-s-fragrances']
     endif
     if mens_collection == blank
       assign mens_collection = all_collection
@@ -22,7 +22,7 @@
 
     assign womens_collection = section.settings.womens_collection
     if womens_collection == blank
-      assign womens_collection = collections['women']
+      assign womens_collection = collections['women-s-fragrances']
     endif
     if womens_collection == blank
       assign womens_collection = all_collection
@@ -164,20 +164,6 @@
   </div>
 </section>
 
-<section class="inspo-accords" aria-label="Fragrance notes">
-  <div class="inspo-accords__veil" aria-hidden="true"></div>
-  <div class="page-width inspo-accords__content">
-    <p class="inspo-eyebrow">Built from the notes you love</p>
-    <h2>Bright citrus. Juicy fruit. Warm amber. Refined woods.</h2>
-    <div class="inspo-note-scenes" aria-hidden="true">
-      <span class="inspo-note-scene inspo-note-scene--bergamot"><i></i><b></b></span>
-      <span class="inspo-note-scene inspo-note-scene--fruit"><i></i><b></b></span>
-      <span class="inspo-note-scene inspo-note-scene--amber"><i></i><b></b></span>
-      <span class="inspo-note-scene inspo-note-scene--woods"><i></i><b></b></span>
-    </div>
-  </div>
-</section>
-
 <style>
   #shop-fragrances-{{ section.id }}{background:#f7f1e7;color:#251c11;padding:clamp(4rem,7vw,8rem) 0}
   #shop-fragrances-{{ section.id }} .inspo-shop__header{max-width:760px;margin:0 auto 3rem;text-align:center}
@@ -222,7 +208,7 @@
     panels.forEach(panel => { const active = panel.id === tab.dataset.panel; panel.hidden = !active; panel.classList.toggle('is-active', active); });
   }));
 
-  const quiz = root.querySelector('[data-inspo-quiz]');
+  if (window.location.pathname === '/pages/scent-finder') {\n    const finderTab = tabs.find(tab => tab.dataset.panel.startsWith('finder-'));\n    if (finderTab) finderTab.click();\n  }\n\n  const quiz = root.querySelector('[data-inspo-quiz]');
   if (!quiz) return;
   const questions = [...quiz.querySelectorAll('[data-question]')];
   const progress = quiz.querySelector('.inspo-quiz__progress span');
