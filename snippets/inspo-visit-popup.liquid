@@ -1,29 +1,13 @@
-{%- assign popup_banner = images['inspo-scents-three-bottle-accords-hero.png'] -%}
+{%- assign popup_banner = images['inspo-scents-oil-filled-accords-banner.png'] -%}
 <div class="inspo-welcome" data-inspo-welcome hidden>
   <button class="inspo-welcome__backdrop" type="button" aria-label="Close promotional banner" data-close></button>
   <section class="inspo-welcome__card" role="dialog" aria-modal="true" aria-label="Inspo Scents promotional banner">
     <button class="inspo-welcome__close" type="button" aria-label="Close" data-close>&times;</button>
     <a class="inspo-welcome__image-link" href="/collections/50-ml-fragrances" aria-label="Shop Inspo Scents fragrances">
       {%- if popup_banner != blank -%}
-        {{
-          popup_banner
-          | image_url: width: 2200
-          | image_tag:
-            loading: 'eager',
-            widths: '480, 750, 1100, 1500, 1800, 2200',
-            sizes: '(max-width: 749px) 94vw, min(1100px, 94vw)',
-            class: 'inspo-welcome__image',
-            alt: 'Shop luxury-inspired fragrances from Inspo Scents'
-        }}
+        {{ popup_banner | image_url: width: 2200 | image_tag: loading: 'eager', widths: '480, 750, 1100, 1500, 1800, 2200', sizes: '(max-width: 749px) 96vw, min(1080px, 94vw)', class: 'inspo-welcome__image', alt: 'Inspo Scents luxury-inspired fragrance collection' }}
       {%- else -%}
-        <img
-          class="inspo-welcome__image"
-          src="{{ 'inspo-scents-three-bottle-accords-hero.png' | file_img_url: 'master' }}"
-          alt="Shop luxury-inspired fragrances from Inspo Scents"
-          loading="eager"
-          width="2200"
-          height="900"
-        >
+        <img class="inspo-welcome__image" src="{{ 'inspo-scents-oil-filled-accords-banner.png' | file_img_url: 'master' }}" alt="Inspo Scents luxury-inspired fragrance collection" loading="eager" width="2060" height="763">
       {%- endif -%}
     </a>
   </section>
@@ -31,7 +15,8 @@
 <script>
 (() => {
   const popup = document.querySelector('[data-inspo-welcome]');
-  if (!popup) return;
+  if (!popup || popup.dataset.ready === 'true') return;
+  popup.dataset.ready = 'true';
   const open = () => {
     popup.hidden = false;
     requestAnimationFrame(() => popup.classList.add('is-visible'));
@@ -40,12 +25,10 @@
   const close = () => {
     popup.classList.remove('is-visible');
     document.documentElement.classList.remove('inspo-popup-open');
-    setTimeout(() => popup.hidden = true, 250);
+    setTimeout(() => { popup.hidden = true; }, 220);
   };
   popup.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', close));
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !popup.hidden) close();
-  });
-  setTimeout(open, 900);
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && !popup.hidden) close(); });
+  setTimeout(open, 650);
 })();
 </script>
