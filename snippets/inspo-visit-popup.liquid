@@ -16,7 +16,14 @@
             alt: 'Shop luxury-inspired fragrances from Inspo Scents'
         }}
       {%- else -%}
-        <div class="inspo-welcome__fallback" role="img" aria-label="Inspo Scents fragrance collection"></div>
+        <img
+          class="inspo-welcome__image"
+          src="{{ 'inspo-scents-three-bottle-accords-hero.png' | file_img_url: 'master' }}"
+          alt="Shop luxury-inspired fragrances from Inspo Scents"
+          loading="eager"
+          width="2200"
+          height="900"
+        >
       {%- endif -%}
     </a>
   </section>
