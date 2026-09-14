@@ -73,7 +73,7 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Luxury-inspired scents. <em>Without the luxury price.</em>",
+            "heading": "Luxury-inspired scents",
             "heading_size": "hxl"
           }
         },
@@ -87,11 +87,11 @@
         "buttons": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop 50 ml fragrances",
+            "button_label_1": "Shop now",
             "button_link_1": "shopify://collections/50-ml-fragrances",
             "button_style_secondary_1": false,
-            "button_label_2": "Explore the collection",
-            "button_link_2": "shopify://collections/50-ml-fragrances",
+            "button_label_2": "",
+            "button_link_2": "",
             "button_style_secondary_2": true
           }
         }
@@ -104,7 +104,7 @@
       "settings": {
         "image": "shopify://shop_images/inspo-scents-fruity-woody-hero.png",
         "image_overlay_opacity": 30,
-        "image_height": "medium",
+        "image_height": "small",
         "image_behavior": "ambient",
         "desktop_content_position": "middle-left",
         "show_text_box": false,
