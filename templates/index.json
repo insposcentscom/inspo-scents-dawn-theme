@@ -1,22 +1,8 @@
 {
   "sections": {
-    "fragrance_banner": {
-      "type": "image-banner",
-      "blocks": {},
-      "block_order": [],
-      "settings": {
-        "image": "shopify://shop_images/inspo-scents-oil-filled-accords-banner.png",
-        "image_overlay_opacity": 0,
-        "image_height": "adapt",
-        "image_behavior": "none",
-        "desktop_content_position": "middle-center",
-        "show_text_box": false,
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-4",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
-      }
+    "inspo_hero": {
+      "type": "inspo-hero",
+      "settings": {}
     },
     "inspo_product_shop": {
       "type": "inspo-home-products",
@@ -30,5 +16,5 @@
       }
     }
   },
-  "order": ["fragrance_banner", "inspo_product_shop"]
+  "order": ["inspo_hero", "inspo_product_shop"]
 }
