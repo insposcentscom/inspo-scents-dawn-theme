@@ -1,116 +1,41 @@
-{%- assign popup_banner = images['inspo-scents-oil-filled-accords-banner.png'] -%}
+{% doc %}
+Renders the once-per-session first-order email offer.
+{% enddoc %}
 
-<div class="inspo-welcome inspo-welcome--banner" data-inspo-welcome hidden>
-  <button class="inspo-welcome__backdrop" type="button" aria-label="Close promotional banner" data-close></button>
-
-  <section class="inspo-welcome__card" role="dialog" aria-modal="true" aria-label="Inspo Scents promotional banner">
+{%- assign popup_banner = images['inspo-scents-image-6-hero.png'] -%}
+<div class="inspo-welcome" data-inspo-welcome hidden>
+  <button class="inspo-welcome__backdrop" type="button" aria-label="Close welcome offer" data-close></button>
+  <section class="inspo-welcome__card" role="dialog" aria-modal="true" aria-labelledby="InspoWelcomeTitle">
     <button class="inspo-welcome__close" type="button" aria-label="Close" data-close>&times;</button>
-
-    <a class="inspo-welcome__banner-link" href="/collections/50-ml-fragrances" aria-label="Shop Inspo Scents fragrances">
+    <div class="inspo-welcome__visual">
       {%- if popup_banner != blank -%}
-        {{
-          popup_banner
-          | image_url: width: 2200
-          | image_tag:
-            loading: 'eager',
-            widths: '480, 750, 990, 1200, 1500, 1800, 2200',
-            sizes: '(max-width: 749px) 94vw, min(1100px, 94vw)',
-            class: 'inspo-welcome__image',
-            alt: 'Inspo Scents luxury-inspired fragrance banner'
-        }}
-      {%- else -%}
-        <img
-          class="inspo-welcome__image"
-          src="{{ 'inspo-scents-oil-filled-accords-banner.png' | file_img_url: 'master' }}"
-          alt="Inspo Scents luxury-inspired fragrance banner"
-          loading="eager"
-          width="2060"
-          height="763"
-        >
+        {{ popup_banner | image_url: width: 1600 | image_tag: loading: 'eager', widths: '480, 750, 990, 1200, 1600', sizes: '(max-width: 749px) 94vw, 52vw', class: 'inspo-welcome__image', alt: 'Inspo Scents bergamot, fruit and woods' }}
       {%- endif -%}
-    </a>
+    </div>
+    <div class="inspo-welcome__promo">
+      {%- form 'customer', id: 'InspoWelcomeForm', class: 'inspo-welcome__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter, first-order-offer">
+        {%- if form.posted_successfully? -%}
+          <p class="inspo-welcome__eyebrow">Welcome to Inspo Scents</p>
+          <h2 class="inspo-welcome__title" id="InspoWelcomeTitle">Your 10% off code is ready.</h2>
+          <div class="inspo-welcome__code-row"><strong class="inspo-welcome__code">WELCOME10</strong><button class="inspo-welcome__copy-button" type="button" data-copy-code>Copy</button></div>
+          <a class="inspo-welcome__shop-button" href="/collections/50-ml-fragrances">Shop fragrances</a>
+        {%- else -%}
+          <p class="inspo-welcome__eyebrow">A scent worth discovering</p>
+          <h2 class="inspo-welcome__title" id="InspoWelcomeTitle">Your signature scent is closer than you think.</h2>
+          <p class="inspo-welcome__copy">Join the list and receive 10% off your first Inspo Scents order.</p>
+          {%- if form.errors -%}<div class="inspo-welcome__errors">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <div class="inspo-welcome__field-row"><label class="visually-hidden" for="InspoWelcomeEmail">Email address</label><input class="inspo-welcome__email" id="InspoWelcomeEmail" type="email" name="contact[email]" autocomplete="email" placeholder="Email address" required><button class="inspo-welcome__submit" type="submit">Reveal my code</button></div>
+          <p class="inspo-welcome__fine-print">By subscribing, you agree to receive marketing emails. Unsubscribe anytime.</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
   </section>
 </div>
-
-<style>
-  .inspo-welcome--banner .inspo-welcome__card {
-    display:block;
-    width:min(1100px,94vw);
-    max-height:92vh;
-    overflow:hidden;
-    border:1px solid rgba(182,138,58,.18);
-    border-radius:1.2rem;
-    background:#e9dec8;
-    box-shadow:0 8px 24px rgba(0,0,0,.14);
-  }
-  .inspo-welcome--banner .inspo-welcome__banner-link {
-    display:block;
-    width:100%;
-    line-height:0;
-  }
-  .inspo-welcome--banner .inspo-welcome__image {
-    display:block;
-    width:100%;
-    height:auto;
-    max-height:88vh;
-    min-height:0;
-    object-fit:contain;
-    object-position:center;
-    background:#e9dec8;
-  }
-  .inspo-welcome--banner .inspo-welcome__close {
-    right:.8rem;
-    top:.8rem;
-    background:rgba(255,255,255,.9);
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-  }
-  .inspo-hero__quote p {
-    text-shadow:0 1px 6px rgba(20,13,7,.12)!important;
-  }
-  @media(max-width:749px) {
-    .inspo-welcome--banner {
-      padding:.6rem;
-    }
-    .inspo-welcome--banner .inspo-welcome__card {
-      width:96vw;
-      max-height:94vh;
-      overflow:hidden;
-      border-radius:.9rem;
-      box-shadow:0 6px 18px rgba(0,0,0,.12);
-    }
-    .inspo-welcome--banner .inspo-welcome__image {
-      width:100%;
-      height:auto;
-      max-height:90vh;
-      object-fit:contain;
-      object-position:center;
-    }
-  }
-</style>
-
+{% stylesheet %}
+.inspo-welcome{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:1.2rem;opacity:0;transition:opacity .2s ease}.inspo-welcome.is-visible{opacity:1}.inspo-welcome__backdrop{position:absolute;inset:0;border:0;background:rgba(10,9,7,.58);backdrop-filter:blur(2px)}.inspo-welcome__card{position:relative;display:grid;grid-template-columns:1.08fr .92fr;width:min(920px,94vw);max-height:88vh;overflow:hidden;border:1px solid #d8c39a;border-radius:1rem;background:#fbf7ef;color:#21180f;box-shadow:0 10px 28px rgba(0,0,0,.18);transform:translateY(8px);transition:transform .2s ease}.inspo-welcome.is-visible .inspo-welcome__card{transform:none}.inspo-welcome__visual{min-height:420px;background:#10161b}.inspo-welcome__image{display:block;width:100%;height:100%;object-fit:cover;object-position:70% center}.inspo-welcome__promo{display:flex;align-items:center;padding:clamp(2.4rem,4vw,4.4rem)}.inspo-welcome__eyebrow{margin:0 0 1rem;color:#8a6428;font-size:1.05rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}.inspo-welcome__title{margin:0 0 1.3rem;color:#21180f;font-size:clamp(2.8rem,4vw,4.4rem);line-height:1.02}.inspo-welcome__copy{color:#514538}.inspo-welcome__field-row,.inspo-welcome__code-row{display:flex;gap:.7rem}.inspo-welcome__email{min-width:0;flex:1;height:4.8rem;border:1px solid #b9a98f;background:#fff;color:#21180f;padding:0 1.2rem}.inspo-welcome__submit,.inspo-welcome__copy-button,.inspo-welcome__shop-button{display:inline-flex;align-items:center;justify-content:center;min-height:4.8rem;border:0;background:#21180f;color:#fffaf0;padding:0 1.4rem;font-weight:700;text-decoration:none;cursor:pointer}.inspo-welcome__code{flex:1;border:1px dashed #a47c36;background:#fff;color:#21180f;padding:1.2rem;text-align:center;letter-spacing:.12em}.inspo-welcome__fine-print{color:#75695d;font-size:1.05rem}.inspo-welcome__close{position:absolute;right:.8rem;top:.8rem;z-index:3;width:3.8rem;height:3.8rem;border:1px solid rgba(0,0,0,.1);border-radius:50%;background:rgba(255,255,255,.94);color:#21180f;font-size:2.3rem;cursor:pointer}.inspo-popup-open{overflow:hidden}
+@media(max-width:749px){.inspo-welcome__card{grid-template-columns:1fr;max-height:94vh;overflow:auto}.inspo-welcome__visual{min-height:0;height:180px}.inspo-welcome__image{object-position:66% center}.inspo-welcome__promo{padding:2rem 1.6rem}.inspo-welcome__field-row,.inspo-welcome__code-row{flex-direction:column}.inspo-welcome__email,.inspo-welcome__submit,.inspo-welcome__copy-button,.inspo-welcome__shop-button{width:100%}.inspo-welcome__title{font-size:2.8rem}}
+{% endstylesheet %}
 <script>
-(() => {
-  const popup = document.querySelector('[data-inspo-welcome]');
-  if (!popup || popup.dataset.ready === 'true') return;
-  popup.dataset.ready = 'true';
-
-  const open = () => {
-    popup.hidden = false;
-    requestAnimationFrame(() => popup.classList.add('is-visible'));
-    document.documentElement.classList.add('inspo-popup-open');
-  };
-
-  const close = () => {
-    popup.classList.remove('is-visible');
-    document.documentElement.classList.remove('inspo-popup-open');
-    setTimeout(() => { popup.hidden = true; }, 220);
-  };
-
-  popup.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', close));
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !popup.hidden) close();
-  });
-
-  setTimeout(open, 650);
-})();
+(()=>{const popup=document.querySelector('[data-inspo-welcome]');if(!popup||popup.dataset.ready)return;popup.dataset.ready='1';const key='inspo-welcome-seen';const open=()=>{popup.hidden=false;requestAnimationFrame(()=>popup.classList.add('is-visible'));document.documentElement.classList.add('inspo-popup-open')};const close=()=>{popup.classList.remove('is-visible');document.documentElement.classList.remove('inspo-popup-open');sessionStorage.setItem(key,'1');setTimeout(()=>popup.hidden=true,220)};popup.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',close));popup.querySelector('[data-copy-code]')?.addEventListener('click',event=>navigator.clipboard.writeText('WELCOME10').then(()=>event.currentTarget.textContent='Copied'));document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!popup.hidden)close()});const success=location.search.includes('customer_posted=true');if(success||!sessionStorage.getItem(key))setTimeout(open,500)})();
 </script>
