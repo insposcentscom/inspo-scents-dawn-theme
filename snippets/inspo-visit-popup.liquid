@@ -1,0 +1,35 @@
+<div class="inspo-welcome" data-inspo-welcome hidden>
+  <button class="inspo-welcome__backdrop" type="button" aria-label="Close welcome offer" data-close></button>
+  <section class="inspo-welcome__card" role="dialog" aria-modal="true" aria-labelledby="inspo-welcome-title">
+    <button class="inspo-welcome__close" type="button" aria-label="Close" data-close>&times;</button>
+    <div class="inspo-welcome__art" aria-hidden="true">
+      <span>CITRUS</span><span>AMBER</span><span>WOODS</span><span>MUSK</span>
+    </div>
+    <div class="inspo-welcome__content">
+      <p class="inspo-eyebrow">Welcome to Inspo Scents</p>
+      <h2 id="inspo-welcome-title">Luxury-inspired scents. Without the luxury price.</h2>
+      <p>Discover 50 ml fragrances designed to make every day feel unforgettable.</p>
+      <a class="button" href="/collections/50-ml-fragrances">Shop fragrances</a>
+      <button class="inspo-welcome__text-button" type="button" data-close>Continue browsing</button>
+    </div>
+  </section>
+</div>
+<script>
+(() => {
+  const popup = document.querySelector('[data-inspo-welcome]');
+  if (!popup) return;
+  const open = () => {
+    popup.hidden = false;
+    requestAnimationFrame(() => popup.classList.add('is-visible'));
+    document.documentElement.classList.add('inspo-popup-open');
+  };
+  const close = () => {
+    popup.classList.remove('is-visible');
+    document.documentElement.classList.remove('inspo-popup-open');
+    setTimeout(() => popup.hidden = true, 250);
+  };
+  popup.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', close));
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && !popup.hidden) close(); });
+  setTimeout(open, 900);
+})();
+</script>

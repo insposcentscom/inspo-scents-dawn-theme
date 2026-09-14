@@ -36,8 +36,8 @@
       ],
       "settings": {
         "image": "shopify://shop_images/inspo-scents-three-bottle-accords-hero.png",
-        "image_overlay_opacity": 20,
-        "image_height": "small",
+        "image_overlay_opacity": 12,
+        "image_height": "medium",
         "image_behavior": "ambient",
         "desktop_content_position": "middle-left",
         "show_text_box": false,
@@ -48,37 +48,20 @@
         "show_text_below": false
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "inspo_product_shop": {
+      "type": "inspo-home-products",
       "settings": {
-        "title": "Shop All Fragrances",
-        "heading_size": "h0",
-        "description": "<p>Explore the complete Inspo Scents 50 ml collection. Luxury-inspired fragrance, accessible at $39.99.</p>",
-        "show_description": true,
-        "description_style": "subtitle",
-        "collection": "50-ml-fragrances",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": false,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": true,
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "standard",
-        "columns_mobile": "2",
-        "padding_top": 52,
-        "padding_bottom": 72
+        "heading": "Find the one that feels like you",
+        "subheading": "Explore every fragrance, shop by collection, or let our guided scent finder choose your match.",
+        "all_collection": "50-ml-fragrances",
+        "mens_collection": "men",
+        "womens_collection": "women",
+        "products_to_show": 12
       }
     }
   },
   "order": [
     "fragrance_banner",
-    "featured_collection"
+    "inspo_product_shop"
   ]
 }

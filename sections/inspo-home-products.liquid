@@ -1,0 +1,317 @@
+{% comment %}
+  Inspo Scents product-first homepage.
+  Uses Shopify collections and product data so merchandising stays editable in Admin.
+{% endcomment %}
+
+<section class="inspo-shop" id="shop-fragrances-{{ section.id }}">
+  {%- liquid
+    assign all_collection = collections[section.settings.all_collection]
+    if all_collection == blank
+      assign all_collection = collections['50-ml-fragrances']
+    endif
+    if all_collection == blank
+      assign all_collection = collections.all
+    endif
+
+    assign mens_collection = collections[section.settings.mens_collection]
+    if mens_collection == blank
+      assign mens_collection = collections['men']
+    endif
+    if mens_collection == blank
+      assign mens_collection = all_collection
+    endif
+
+    assign womens_collection = collections[section.settings.womens_collection]
+    if womens_collection == blank
+      assign womens_collection = collections['women']
+    endif
+    if womens_collection == blank
+      assign womens_collection = all_collection
+    endif
+  -%}
+
+  <div class="page-width">
+    <header class="inspo-shop__header">
+      <p class="inspo-eyebrow">Luxury-inspired fragrance</p>
+      <h2>{{ section.settings.heading | escape }}</h2>
+      <p>{{ section.settings.subheading | escape }}</p>
+    </header>
+
+    <div class="inspo-tabs" role="tablist" aria-label="Shop fragrances">
+      <button class="inspo-tab" type="button" role="tab" aria-selected="false" data-panel="men-{{ section.id }}">Men</button>
+      <button class="inspo-tab" type="button" role="tab" aria-selected="false" data-panel="women-{{ section.id }}">Women</button>
+      <button class="inspo-tab is-active" type="button" role="tab" aria-selected="true" data-panel="all-{{ section.id }}">All</button>
+      <button class="inspo-tab inspo-tab--finder" type="button" role="tab" aria-selected="false" data-panel="finder-{{ section.id }}">
+        Find My Scent
+      </button>
+    </div>
+
+    {%- assign collection_keys = 'men,women,all' | split: ',' -%}
+    {%- for key in collection_keys -%}
+      {%- case key -%}
+        {%- when 'men' -%}{%- assign featured = mens_collection -%}
+        {%- when 'women' -%}{%- assign featured = womens_collection -%}
+        {%- else -%}{%- assign featured = all_collection -%}
+      {%- endcase -%}
+      <div
+        class="inspo-panel{% if key == 'all' %} is-active{% endif %}"
+        id="{{ key }}-{{ section.id }}"
+        role="tabpanel"
+        {% unless key == 'all' %}hidden{% endunless %}
+      >
+        {%- if featured.products_count > 0 -%}
+          <ul class="grid product-grid grid--2-col-tablet-down grid--4-col-desktop" role="list">
+            {%- for product in featured.products limit: section.settings.products_to_show -%}
+              <li class="grid__item">
+                {% render 'card-product',
+                  card_product: product,
+                  media_aspect_ratio: 'square',
+                  image_shape: 'default',
+                  show_secondary_image: false,
+                  show_vendor: false,
+                  show_rating: false,
+                  lazy_load: true,
+                  skip_styles: false,
+                  quick_add: 'standard',
+                  section_id: section.id
+                %}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          <div class="inspo-empty">
+            <h3>Fragrances coming soon</h3>
+            <p>Add products to this collection in Shopify to display them here.</p>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+
+    <div class="inspo-panel inspo-finder" id="finder-{{ section.id }}" role="tabpanel" hidden>
+      <div class="inspo-finder__intro">
+        <p class="inspo-eyebrow">Personal scent matching</p>
+        <h2>Meet your next signature scent</h2>
+        <p>Choose what feels most like you. We’ll match your mood, occasion and preferred intensity to a fragrance.</p>
+      </div>
+
+      <div class="inspo-quiz" data-inspo-quiz>
+        <div class="inspo-quiz__progress" aria-hidden="true"><span></span></div>
+
+        <div class="inspo-question is-active" data-question="0">
+          <p class="inspo-question__count">Question 1 of 3</p>
+          <h3>Which scent world draws you in?</h3>
+          <div class="inspo-choices">
+            {%- assign scent_labels = 'Fresh & Clean|Sweet & Warm|Deep & Woody|Fruity & Bright' | split: '|' -%}
+            {%- assign scent_values = 'fresh citrus aquatic clean|sweet vanilla amber gourmand|woody oud leather smoky|fruity apple berry floral' | split: '|' -%}
+            {%- for label in scent_labels -%}
+              {%- assign image_product = all_collection.products[forloop.index0] -%}
+              <button class="inspo-choice" type="button" data-answer="{{ scent_values[forloop.index0] }}">
+                <span class="inspo-choice__image"{% if image_product.featured_image %} style="background-image:url('{{ image_product.featured_image | image_url: width: 700 }}')"{% endif %}></span>
+                <span>{{ label }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="inspo-question" data-question="1" hidden>
+          <p class="inspo-question__count">Question 2 of 3</p>
+          <h3>Where will you wear it most?</h3>
+          <div class="inspo-choices">
+            {%- assign occasion_labels = 'Every Day|Date Night|Work & Events|Celebrations' | split: '|' -%}
+            {%- assign occasion_values = 'versatile daily clean fresh|sexy warm amber sweet|refined elegant woody aromatic|bold statement intense fruity' | split: '|' -%}
+            {%- for label in occasion_labels -%}
+              {%- assign image_index = forloop.index0 | plus: 4 -%}
+              {%- assign image_product = all_collection.products[image_index] -%}
+              <button class="inspo-choice" type="button" data-answer="{{ occasion_values[forloop.index0] }}">
+                <span class="inspo-choice__image"{% if image_product.featured_image %} style="background-image:url('{{ image_product.featured_image | image_url: width: 700 }}')"{% endif %}></span>
+                <span>{{ label }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="inspo-question" data-question="2" hidden>
+          <p class="inspo-question__count">Question 3 of 3</p>
+          <h3>How much presence should it have?</h3>
+          <div class="inspo-choices inspo-choices--three">
+            {%- assign strength_labels = 'Soft & Close|Noticeable|Bold & Lasting' | split: '|' -%}
+            {%- assign strength_values = 'soft subtle musk skin|balanced versatile aromatic|intense strong oud amber elixir' | split: '|' -%}
+            {%- for label in strength_labels -%}
+              {%- assign image_index = forloop.index0 | plus: 8 -%}
+              {%- assign image_product = all_collection.products[image_index] -%}
+              <button class="inspo-choice" type="button" data-answer="{{ strength_values[forloop.index0] }}">
+                <span class="inspo-choice__image"{% if image_product.featured_image %} style="background-image:url('{{ image_product.featured_image | image_url: width: 700 }}')"{% endif %}></span>
+                <span>{{ label }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="inspo-result" data-result hidden>
+          <p class="inspo-eyebrow">Your match</p>
+          <h3 data-result-heading>Your scent is waiting</h3>
+          <div class="inspo-result__cards">
+            {%- for product in all_collection.products limit: 30 -%}
+              <a
+                class="inspo-result-card"
+                href="{{ product.url }}"
+                data-product
+                data-title="{{ product.title | downcase | escape }}"
+                data-tags="{{ product.tags | join: ' ' | downcase | escape }}"
+                hidden
+              >
+                {%- if product.featured_image -%}
+                  {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: product.title }}
+                {%- endif -%}
+                <span>{{ product.title }}</span>
+                <strong>{{ product.price | money }}</strong>
+              </a>
+            {%- endfor -%}
+          </div>
+          <button class="button button--secondary" type="button" data-restart>Retake the quiz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="inspo-accords" aria-label="Fragrance notes">
+  <div class="inspo-accords__watermark" aria-hidden="true">BERGAMOT · APPLE · AMBER · WOODS</div>
+  <div class="page-width inspo-accords__content">
+    <p class="inspo-eyebrow">Crafted by note. Chosen by feeling.</p>
+    <h2>From bright first impressions to an unforgettable dry down.</h2>
+    <div class="inspo-note-list" aria-label="Featured accords">
+      <span>Citrus</span><span>Fruits</span><span>Florals</span><span>Warm Amber</span><span>Fine Woods</span><span>Soft Musk</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  #shop-fragrances-{{ section.id }} { background:#f8f4eb; color:#17130c; padding:clamp(5rem,8vw,9rem) 0; }
+  #shop-fragrances-{{ section.id }} .inspo-shop__header { max-width:720px; margin:0 auto 3.2rem; text-align:center; }
+  #shop-fragrances-{{ section.id }} .inspo-shop__header h2,
+  #shop-fragrances-{{ section.id }} .inspo-finder h2 { margin:.5rem 0 1rem; font-size:clamp(3rem,5vw,5.4rem); line-height:1.04; letter-spacing:-.04em; }
+  .inspo-eyebrow { margin:0; color:#8b6527; font-size:1.15rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
+  .inspo-tabs { display:flex; justify-content:center; gap:.8rem; margin:0 auto 3.5rem; overflow-x:auto; padding:.3rem; }
+  .inspo-tab { appearance:none; border:1px solid rgba(23,19,12,.22); border-radius:99px; background:transparent; color:inherit; cursor:pointer; flex:0 0 auto; font:inherit; font-weight:700; padding:1.1rem 2.2rem; transition:.2s ease; }
+  .inspo-tab:hover,.inspo-tab.is-active { background:#17130c; border-color:#17130c; color:#fff9ec; transform:translateY(-1px); }
+  .inspo-tab--finder { border-color:#b68a3a; color:#795719; }
+  .inspo-panel[hidden],.inspo-question[hidden],.inspo-result[hidden] { display:none!important; }
+  .inspo-panel .product-grid { row-gap:4rem; }
+  .inspo-empty { padding:6rem 2rem; text-align:center; border:1px solid rgba(23,19,12,.12); }
+  .inspo-finder { max-width:1080px; margin:auto; padding:clamp(2.5rem,5vw,6rem); border:1px solid rgba(182,138,58,.3); background:#fffaf0; }
+  .inspo-finder__intro { max-width:700px; margin:0 auto 3rem; text-align:center; }
+  .inspo-quiz__progress { height:3px; background:rgba(23,19,12,.1); margin:0 0 3.5rem; overflow:hidden; }
+  .inspo-quiz__progress span { display:block; width:33.333%; height:100%; background:#b68a3a; transition:width .35s ease; }
+  .inspo-question h3,.inspo-result h3 { margin:.5rem 0 2.4rem; text-align:center; font-size:clamp(2.4rem,4vw,3.8rem); }
+  .inspo-question__count { color:#8b6527; font-size:1.2rem; font-weight:700; letter-spacing:.12em; text-align:center; text-transform:uppercase; }
+  .inspo-choices { display:grid; grid-template-columns:repeat(4,1fr); gap:1.2rem; }
+  .inspo-choices--three { grid-template-columns:repeat(3,1fr); }
+  .inspo-choice { appearance:none; overflow:hidden; padding:0; border:1px solid rgba(23,19,12,.12); background:#f4ecde; cursor:pointer; color:#17130c; font:inherit; font-size:1.35rem; font-weight:700; text-align:left; transition:.22s ease; }
+  .inspo-choice:hover { border-color:#b68a3a; box-shadow:0 12px 32px rgba(35,25,10,.12); transform:translateY(-4px); }
+  .inspo-choice__image { display:block; aspect-ratio:4/3; background:radial-gradient(circle at 60% 30%,rgba(217,183,110,.9),transparent 30%),linear-gradient(135deg,#2b2118,#8b6527); background-position:center; background-size:cover; }
+  .inspo-choice > span:last-child { display:block; padding:1.4rem; }
+  .inspo-result { text-align:center; }
+  .inspo-result__cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; margin:0 0 2.5rem; }
+  .inspo-result-card { color:inherit; display:flex; flex-direction:column; gap:.6rem; text-decoration:none; text-align:left; }
+  .inspo-result-card img { width:100%; aspect-ratio:1; object-fit:cover; background:#f3ede3; }
+  .inspo-result-card span { font-weight:700; font-size:1.5rem; }
+  .inspo-accords { position:relative; overflow:hidden; background:radial-gradient(circle at 15% 20%,rgba(217,183,110,.22),transparent 30%),radial-gradient(circle at 85% 75%,rgba(133,64,30,.22),transparent 32%),#17130c; color:#fff9ec; padding:clamp(6rem,9vw,11rem) 0; text-align:center; }
+  .inspo-accords__watermark { position:absolute; inset:50% auto auto 50%; width:120%; transform:translate(-50%,-50%); color:#fff; font-family:serif; font-size:clamp(5rem,12vw,16rem); letter-spacing:.05em; line-height:.8; opacity:.035; white-space:nowrap; }
+  .inspo-accords__content { position:relative; z-index:1; max-width:900px; }
+  .inspo-accords h2 { margin:1rem auto 3rem; font-size:clamp(3rem,5vw,5.8rem); line-height:1.05; }
+  .inspo-note-list { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; }
+  .inspo-note-list span { border:1px solid rgba(217,183,110,.45); border-radius:99px; color:#efd9a6; padding:.9rem 1.6rem; text-transform:uppercase; letter-spacing:.12em; font-size:1.05rem; }
+  @media(max-width:749px){
+    .inspo-tabs{justify-content:flex-start}
+    .inspo-choices,.inspo-choices--three{grid-template-columns:repeat(2,1fr)}
+    .inspo-result__cards{grid-template-columns:1fr}
+    .inspo-finder{padding:2.2rem 1.4rem}
+  }
+</style>
+
+<script>
+(() => {
+  const root = document.getElementById('shop-fragrances-{{ section.id }}');
+  if (!root || root.dataset.ready) return;
+  root.dataset.ready = 'true';
+
+  const tabs = [...root.querySelectorAll('.inspo-tab')];
+  const panels = [...root.querySelectorAll('.inspo-panel')];
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(item => {
+      const active = item === tab;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    panels.forEach(panel => {
+      const active = panel.id === tab.dataset.panel;
+      panel.classList.toggle('is-active', active);
+      panel.hidden = !active;
+    });
+    if (tab.dataset.panel.startsWith('finder')) {
+      root.querySelector('.inspo-finder').scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }));
+
+  const quiz = root.querySelector('[data-inspo-quiz]');
+  if (!quiz) return;
+  const questions = [...quiz.querySelectorAll('[data-question]')];
+  const progress = quiz.querySelector('.inspo-quiz__progress span');
+  const result = quiz.querySelector('[data-result]');
+  const answers = [];
+
+  questions.forEach((question, index) => {
+    question.querySelectorAll('[data-answer]').forEach(choice => choice.addEventListener('click', () => {
+      answers[index] = choice.dataset.answer;
+      question.classList.remove('is-active');
+      question.hidden = true;
+      if (questions[index + 1]) {
+        questions[index + 1].hidden = false;
+        questions[index + 1].classList.add('is-active');
+        progress.style.width = ((index + 2) / questions.length * 100) + '%';
+      } else {
+        const tokens = answers.join(' ').split(/\s+/).filter(Boolean);
+        const products = [...result.querySelectorAll('[data-product]')];
+        products.forEach(product => {
+          const haystack = (product.dataset.title + ' ' + product.dataset.tags).toLowerCase();
+          product.dataset.score = tokens.reduce((score, token) => score + (haystack.includes(token) ? 1 : 0), 0);
+          product.hidden = true;
+        });
+        products.sort((a,b) => Number(b.dataset.score) - Number(a.dataset.score));
+        products.slice(0,3).forEach(product => product.hidden = false);
+        result.hidden = false;
+        progress.style.width = '100%';
+        result.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    }));
+  });
+
+  quiz.querySelector('[data-restart]')?.addEventListener('click', () => {
+    answers.length = 0;
+    result.hidden = true;
+    questions.forEach((question,index) => {
+      question.hidden = index !== 0;
+      question.classList.toggle('is-active', index === 0);
+    });
+    progress.style.width = '33.333%';
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Inspo product shop",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {"type":"text","id":"heading","label":"Heading","default":"Find the one that feels like you"},
+    {"type":"text","id":"subheading","label":"Subheading","default":"Explore every fragrance, shop by collection, or let our guided scent finder choose your match."},
+    {"type":"collection","id":"all_collection","label":"All fragrances collection"},
+    {"type":"collection","id":"mens_collection","label":"Men's collection"},
+    {"type":"collection","id":"womens_collection","label":"Women's collection"},
+    {"type":"range","id":"products_to_show","min":4,"max":24,"step":4,"default":12,"label":"Products to show"}
+  ],
+  "presets": [{"name":"Inspo product shop"}]
+}
+{% endschema %}
