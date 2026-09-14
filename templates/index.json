@@ -6,21 +6,21 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Find your signature scent",
+            "heading": "Scent, reimagined",
             "heading_size": "hxl"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "Four distinctive 50 ml fragrances. Each $39.99.",
+            "text": "Fruity brightness. Fresh energy. Woody depth.",
             "text_style": "subtitle"
           }
         },
         "buttons": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop the collection",
+            "button_label_1": "Shop all fragrances",
             "button_link_1": "shopify://collections/50-ml-fragrances",
             "button_style_secondary_1": false,
             "button_label_2": "",
@@ -35,8 +35,8 @@
         "buttons"
       ],
       "settings": {
-        "image": "shopify://shop_images/inspo-scents-fruity-woody-hero.png",
-        "image_overlay_opacity": 30,
+        "image": "shopify://shop_images/inspo-scents-three-bottle-accords-hero.png",
+        "image_overlay_opacity": 24,
         "image_height": "small",
         "image_behavior": "ambient",
         "desktop_content_position": "middle-left",
