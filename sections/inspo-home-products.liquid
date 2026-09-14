@@ -5,7 +5,7 @@
 
 <section class="inspo-shop" id="shop-fragrances-{{ section.id }}">
   {%- liquid
-    assign all_collection = collections[section.settings.all_collection]
+    assign all_collection = section.settings.all_collection
     if all_collection == blank
       assign all_collection = collections['50-ml-fragrances']
     endif
@@ -13,7 +13,7 @@
       assign all_collection = collections.all
     endif
 
-    assign mens_collection = collections[section.settings.mens_collection]
+    assign mens_collection = section.settings.mens_collection
     if mens_collection == blank
       assign mens_collection = collections['men']
     endif
@@ -21,7 +21,7 @@
       assign mens_collection = all_collection
     endif
 
-    assign womens_collection = collections[section.settings.womens_collection]
+    assign womens_collection = section.settings.womens_collection
     if womens_collection == blank
       assign womens_collection = collections['women']
     endif
