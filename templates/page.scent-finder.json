@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "finder": {
+      "type": "inspo-home-products",
+      "settings": {
+        "heading": "Find your scent",
+        "subheading": "Answer the visual questions to discover your closest Inspo Scents match.",
+        "all_collection": "50-ml-fragrances",
+        "mens_collection": "men-s-fragrances",
+        "womens_collection": "women-s-fragrances",
+        "products_to_show": 12
+      }
+    }
+  },
+  "order": [
+    "finder"
+  ]
+}
