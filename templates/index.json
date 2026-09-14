@@ -36,9 +36,9 @@
       ],
       "settings": {
         "image": "shopify://shop_images/inspo-scents-three-bottle-accords-hero.png",
-        "image_overlay_opacity": 12,
-        "image_height": "medium",
-        "image_behavior": "ambient",
+        "image_overlay_opacity": 6,
+        "image_height": "small",
+        "image_behavior": "none",
         "desktop_content_position": "middle-left",
         "show_text_box": false,
         "desktop_content_alignment": "left",
