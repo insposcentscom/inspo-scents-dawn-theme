@@ -1,0 +1,51 @@
+{%- comment -%}
+  Inspo Scents homepage hero.
+  Keeps the full fragrance artwork visible on desktop and mobile and overlays the approved quote only.
+{%- endcomment -%}
+
+{%- assign inspo_hero_image = images['inspo-scents-oil-filled-accords-banner.png'] -%}
+
+<section class="inspo-hero" aria-label="Inspo Scents luxury-inspired fragrance">
+  <div class="inspo-hero__frame">
+    {%- if inspo_hero_image != blank -%}
+      {{
+        inspo_hero_image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          widths: '480, 750, 990, 1200, 1500, 1800, 2200, 2400',
+          sizes: '100vw',
+          class: 'inspo-hero__image',
+          alt: 'Inspo Scents perfume bottles surrounded by bergamot, fruit and fine woods'
+      }}
+    {%- else -%}
+      <img
+        class="inspo-hero__image"
+        src="{{ 'inspo-scents-oil-filled-accords-banner.png' | file_img_url: 'master' }}"
+        alt="Inspo Scents perfume bottles surrounded by bergamot, fruit and fine woods"
+        loading="eager"
+        width="2060"
+        height="763"
+      >
+    {%- endif -%}
+
+    <div class="inspo-hero__quote">
+      <p>Luxury-inspired scents,<br><span>without the luxury price.</span></p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Inspo Scents hero",
+  "tag": "section",
+  "class": "section-inspo-hero",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Inspo Scents hero"
+    }
+  ]
+}
+{% endschema %}
