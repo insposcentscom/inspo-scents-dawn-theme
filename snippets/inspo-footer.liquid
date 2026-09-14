@@ -1,10 +1,42 @@
+{%- assign inspo_footer_logo = images['inspo-scents-champagne-logo-transparent.png'] -%}
+{%- assign inspo_footer_art = images['inspo-scents-oil-filled-accords-banner.png'] -%}
+
+<div class="inspo-footer__artwork" aria-hidden="true">
+  {%- if inspo_footer_art != blank -%}
+    {{
+      inspo_footer_art
+      | image_url: width: 2200
+      | image_tag:
+        loading: 'lazy',
+        widths: '750, 1100, 1500, 1800, 2200',
+        sizes: '100vw',
+        class: 'inspo-footer__artwork-image',
+        alt: ''
+    }}
+  {%- endif -%}
+</div>
+
 <div class="inspo-footer page-width">
   <div class="inspo-footer__grid">
     <div class="inspo-footer__brand">
-      <p class="inspo-footer__logo">INSPO SCENTS</p>
-      <p>Luxury-inspired fragrance, made for the way you want to feel.</p>
+      {%- if inspo_footer_logo != blank -%}
+        {{
+          inspo_footer_logo
+          | image_url: width: 520
+          | image_tag:
+            loading: 'lazy',
+            widths: '240, 360, 520',
+            sizes: '(max-width: 749px) 210px, 250px',
+            class: 'inspo-footer__brand-logo',
+            alt: 'Inspo Scents'
+        }}
+      {%- else -%}
+        <p class="inspo-footer__logo">INSPO SCENTS</p>
+      {%- endif -%}
+      <p>Luxury-inspired scents without the luxury price.</p>
       <a href="mailto:contact@insposcents.com">contact@insposcents.com</a>
     </div>
+
     <nav aria-labelledby="inspo-customer-service">
       <h2 id="inspo-customer-service">Customer Service</h2>
       <ul>
@@ -14,6 +46,7 @@
         <li><a href="/account">Order Status</a></li>
       </ul>
     </nav>
+
     <nav aria-labelledby="inspo-legal">
       <h2 id="inspo-legal">Legal</h2>
       <ul>
@@ -22,6 +55,7 @@
         <li><a href="/policies/refund-policy">Return Policy</a></li>
       </ul>
     </nav>
+
     <div aria-labelledby="inspo-socials">
       <h2 id="inspo-socials">Socials</h2>
       <ul>
@@ -31,6 +65,7 @@
       </ul>
     </div>
   </div>
+
   <div class="inspo-footer__payments" aria-label="Accepted payment methods">
     <span>Secure checkout with</span>
     <ul class="list list-payment" role="list">
