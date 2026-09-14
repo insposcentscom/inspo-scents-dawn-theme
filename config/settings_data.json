@@ -2,6 +2,7 @@
   "current": "Dawn",
   "presets": {
     "Dawn": {
+      "logo": "shopify://shop_images/inspo-scents-champagne-logo-transparent.png",
       "logo_width": 90,
       "customer_account_menu": "customer-account-main-menu",
       "color_schemes": {
@@ -51,13 +52,13 @@
         },
         "scheme-5": {
           "settings": {
-            "background": "#D9B76E",
+            "background": "#334FB4",
             "background_gradient": "",
-            "text": "#0D0B08",
-            "button": "#0D0B08",
-            "button_label": "#F7F3EA",
-            "secondary_button_label": "#0D0B08",
-            "shadow": "#000000"
+            "text": "#FFFFFF",
+            "button": "#FFFFFF",
+            "button_label": "#334FB4",
+            "secondary_button_label": "#FFFFFF",
+            "shadow": "#121212"
           }
         }
       },
@@ -109,7 +110,7 @@
       "collection_card_color_scheme": "scheme-1",
       "collection_card_border_thickness": 0,
       "collection_card_border_opacity": 10,
-      "collection_card_corner_radius": 2,
+      "collection_card_corner_radius": 0,
       "collection_card_shadow_opacity": 0,
       "collection_card_shadow_horizontal_offset": 0,
       "collection_card_shadow_vertical_offset": 4,
@@ -176,7 +177,7 @@
       "show_vendor": false,
       "show_cart_note": false,
       "cart_drawer_collection": "",
-      "cart_color_scheme": "scheme-4",
+      "cart_color_scheme": "scheme-1",
       "sections": {
         "main-password-header": {
           "type": "main-password-header",
