@@ -170,7 +170,7 @@
   #shop-fragrances-{{ section.id }} .inspo-shop__header h2,#shop-fragrances-{{ section.id }} .inspo-finder h2{margin:.6rem 0 1rem;color:#22180f;font-size:clamp(3rem,5vw,5.2rem);line-height:1.04;letter-spacing:-.035em}
   .inspo-eyebrow{margin:0;color:#9a6d24;font-size:1.05rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
   .inspo-tabs{display:flex;justify-content:center;gap:.8rem;margin:0 auto 3.4rem;overflow-x:auto;padding:.3rem;scrollbar-width:none}.inspo-tabs::-webkit-scrollbar{display:none}
-  .inspo-tab{appearance:none;border:1px solid rgba(37,28,17,.2);border-radius:99px;background:rgba(255,255,255,.24);color:#2a1f13;cursor:pointer;flex:0 0 auto;font:inherit;font-size:1.15rem;font-weight:700;letter-spacing:.08em;padding:1rem 1.9rem;transition:.2s ease}
+  .inspo-tab{position:relative;z-index:2;touch-action:manipulation;pointer-events:auto;appearance:none;border:1px solid rgba(37,28,17,.2);border-radius:99px;background:rgba(255,255,255,.24);color:#2a1f13;cursor:pointer;flex:0 0 auto;font:inherit;font-size:1.15rem;font-weight:700;letter-spacing:.08em;padding:1rem 1.9rem;transition:.2s ease}
   .inspo-tab:hover,.inspo-tab.is-active{background:#2a2118;border-color:#2a2118;color:#fffaf0;transform:translateY(-1px)}.inspo-tab--finder{border-color:#b98a39;color:#7b5619}
   .inspo-panel[hidden],.inspo-question[hidden],.inspo-result[hidden]{display:none!important}.inspo-panel .product-grid{row-gap:3.5rem}.inspo-empty{padding:5rem 2rem;text-align:center;border:1px solid rgba(37,28,17,.12)}
   .inspo-finder{max-width:1120px;margin:auto;padding:clamp(2.2rem,5vw,5.5rem);border:1px solid rgba(181,132,48,.26);border-radius:2rem;background:#fffaf1;box-shadow:0 12px 40px rgba(48,34,16,.05)}
@@ -208,7 +208,12 @@
     panels.forEach(panel => { const active = panel.id === tab.dataset.panel; panel.hidden = !active; panel.classList.toggle('is-active', active); });
   }));
 
-  if (window.location.pathname === '/pages/scent-finder') {\n    const finderTab = tabs.find(tab => tab.dataset.panel.startsWith('finder-'));\n    if (finderTab) finderTab.click();\n  }\n\n  const quiz = root.querySelector('[data-inspo-quiz]');
+  if (window.location.pathname === '/pages/scent-finder') {
+    const finderTab = tabs.find(tab => tab.dataset.panel.startsWith('finder-'));
+    if (finderTab) finderTab.click();
+  }
+
+  const quiz = root.querySelector('[data-inspo-quiz]');
   if (!quiz) return;
   const questions = [...quiz.querySelectorAll('[data-question]')];
   const progress = quiz.querySelector('.inspo-quiz__progress span');
