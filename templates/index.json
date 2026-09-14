@@ -30,8 +30,5 @@
       }
     }
   },
-  "order": [
-    "fragrance_banner",
-    "inspo_product_shop"
-  ]
+  "order": ["fragrance_banner", "inspo_product_shop"]
 }
