@@ -52,3 +52,32 @@
  .inspo-welcome__card{grid-template-columns:1fr}
  .inspo-welcome__art{min-height:180px;flex-direction:row;gap:1rem;font-size:2rem}
 }
+
+/* Full, uncropped Inspo Scents hero */
+[id*="fragrance_banner"] .banner__media {
+  background:#eadfca;
+}
+[id*="fragrance_banner"] .banner__media img {
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:none!important;
+}
+[id*="fragrance_banner"].banner--small:not(.banner--adapt) {
+  min-height:clamp(30rem,34vw,46rem);
+}
+@media screen and (max-width:749px) {
+  [id*="fragrance_banner"].banner--small:not(.banner--adapt) {
+    min-height:24rem;
+  }
+  [id*="fragrance_banner"] .banner__media {
+    position:absolute;
+    height:100%;
+  }
+  [id*="fragrance_banner"] .banner__content {
+    min-height:24rem;
+    padding:1.6rem;
+  }
+  [id*="fragrance_banner"] .banner__box {
+    padding:1.5rem;
+  }
+}
