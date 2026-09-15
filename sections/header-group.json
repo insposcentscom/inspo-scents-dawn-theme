@@ -33,10 +33,10 @@
       "settings": {
         "color_scheme": "scheme-4",
         "menu_color_scheme": "scheme-4",
-        "logo_position": "middle-left",
+        "logo_position": "middle-center",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
+        "sticky_header_type": "always",
         "show_line_separator": true,
         "enable_country_selector": true,
         "enable_language_selector": true,
@@ -52,3 +52,4 @@
     "header"
   ]
 }
+
