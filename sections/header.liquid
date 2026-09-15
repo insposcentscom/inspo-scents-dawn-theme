@@ -191,76 +191,153 @@
     font-size: 1.5rem;
   }
 
-  .inspo-inline-search__results {
-    position: absolute;
-    top: calc(100% + 0.6rem);
-    right: 0;
-    left: 0;
-    z-index: 60;
-    max-height: min(62vh, 52rem);
-    overflow-y: auto;
-    padding: 0.8rem;
-    border: 1px solid rgba(var(--color-foreground), 0.16);
-    border-radius: 1.4rem;
-    background: rgb(var(--color-background));
-    box-shadow: 0 1.2rem 3.2rem rgba(25, 18, 10, 0.14);
-  }
-
-  .inspo-inline-search__results[hidden] {
-    display: none;
-  }
-
-  .inspo-inline-search__results .predictive-search__results-groups-wrapper {
-    display: block;
-  }
-
-  .inspo-inline-search__results .predictive-search__result-group:first-child:empty {
-    display: none;
-  }
-
-  .inspo-inline-search__results .predictive-search__results-list {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.6rem;
-    margin: 0;
-    padding: 0;
-  }
-
-  .inspo-inline-search__results .predictive-search__list-item {
-    list-style: none;
-  }
-
-  .inspo-inline-search__results .predictive-search__item {
-    display: flex;
+  .inspo-inline-search__clear {
+    display: inline-flex;
     align-items: center;
-    min-height: 7.2rem;
+    justify-content: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    flex: 0 0 3.6rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: currentColor;
+    cursor: pointer;
+  }
+
+  .inspo-inline-search__clear[hidden],
+  .inspo-search-page[hidden],
+  .inspo-search-card[hidden],
+  .inspo-search-empty[hidden] {
+    display: none !important;
+  }
+
+  .inspo-inline-search__input:focus-visible,
+  .inspo-inline-search__clear:focus-visible {
+    outline: 2px solid rgba(var(--color-foreground), 0.72);
+    outline-offset: 3px;
+  }
+
+  .inspo-search-page {
+    position: relative;
+    z-index: 3;
+    min-height: 52vh;
+    padding: clamp(3rem, 5vw, 6rem) 0;
+    background: #f7f1e7;
+    color: #251c11;
+  }
+
+  html.inspo-search-mode #MainContent {
+    display: none;
+  }
+
+  .inspo-search-page__header {
+    margin: 0 auto 2.4rem;
+    text-align: center;
+  }
+
+  .inspo-search-page__eyebrow {
+    margin: 0 0 0.6rem;
+    color: #91661f;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+  }
+
+  .inspo-search-page__header h2 {
+    margin: 0;
+    color: #251c11;
+    font-size: clamp(2.4rem, 4vw, 4.2rem);
+    line-height: 1.1;
+  }
+
+  .inspo-search-page__status {
+    margin: 0.6rem 0 0;
+    color: #725a3a;
+  }
+
+  .inspo-search-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.6rem;
+  }
+
+  .inspo-search-card {
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+    flex-direction: column;
+    border: 1px solid rgba(37, 28, 17, 0.1);
+    border-radius: 1.4rem;
+    background: #fffaf1;
+  }
+
+  .inspo-search-card__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #f2eadf;
+  }
+
+  .inspo-search-card__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
     height: 100%;
-    padding: 0.8rem;
-    border-radius: 1rem;
-    color: rgb(var(--color-foreground));
+    padding: 1rem;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .inspo-search-card__details {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.3rem;
+  }
+
+  .inspo-search-card__details h3 {
+    margin: 0 0 0.7rem;
+    font-size: 1.55rem;
+    line-height: 1.25;
+  }
+
+  .inspo-search-card__details h3 a {
+    color: #251c11;
     text-decoration: none;
   }
 
-  .inspo-inline-search__results .predictive-search__item:hover,
-  .inspo-inline-search__results .predictive-search__item:focus-visible {
-    background: rgba(var(--color-foreground), 0.06);
+  .inspo-search-card__price {
+    margin: 0 0 1.2rem;
+    color: #251c11;
+    font-size: 1.35rem;
   }
 
-  .inspo-inline-search__results .predictive-search__image {
-    width: 5.6rem;
-    height: 6.4rem;
-    margin-right: 1rem;
-    object-fit: contain;
+  .inspo-search-card__details form {
+    margin-top: auto;
   }
 
-  .inspo-inline-search__results .predictive-search__heading {
-    margin: 0;
-    padding: 0.8rem;
+  .inspo-search-card__details .button {
+    width: 100%;
+    min-height: 4.2rem;
   }
 
-  .inspo-inline-search__results .predictive-search__search-for-button,
-  .inspo-inline-search__results .predictive-search__loading-state {
-    display: none;
+  .inspo-search-empty {
+    max-width: 54rem;
+    margin: 4rem auto;
+    text-align: center;
+  }
+
+  .inspo-search-empty h3 {
+    margin: 0 0 0.8rem;
+    color: #251c11;
+    font-size: 2.6rem;
+  }
+
+  .inspo-search-empty p {
+    margin: 0 0 1.8rem;
   }
 
   @media screen and (max-width: 989px) {
@@ -290,9 +367,12 @@
       min-height: 4rem;
     }
 
-    .inspo-inline-search__results .predictive-search__results-list {
-      grid-template-columns: 1fr;
-    }
+    .inspo-search-page { padding: 2.6rem 0 4rem; }
+    .inspo-search-page__header { margin-bottom: 1.6rem; }
+    .inspo-search-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .inspo-search-card__details { padding: 1rem; }
+    .inspo-search-card__details h3 { font-size: 1.25rem; }
+    .inspo-search-card__details .button { min-height: 4rem; padding: 0 0.6rem; font-size: 1.1rem; }
   }
 </style>
 
@@ -510,7 +590,7 @@
     </div>
   </header>
   <div class="inspo-header-search page-width">
-    <inspo-inline-search class="inspo-inline-search" data-url="{{ routes.predictive_search_url }}">
+    <inspo-inline-search class="inspo-inline-search">
       <form action="{{ routes.search_url }}" method="get" role="search">
         <label class="visually-hidden" for="InspoHeaderSearch-{{ section.id }}">{{ 'general.search.search' | t }}</label>
         <div class="inspo-inline-search__field">
@@ -522,23 +602,79 @@
             name="q"
             placeholder="Search fragrances, notes or inspirations"
             autocomplete="off"
-            role="combobox"
-            aria-expanded="false"
-            aria-autocomplete="list"
-            aria-controls="InspoHeaderSearchResults-{{ section.id }}"
+            role="searchbox"
+            aria-controls="InspoInlineSearchPage-{{ section.id }}"
           >
+          <button class="inspo-inline-search__clear" type="button" aria-label="Clear search" data-inspo-search-clear hidden>
+            {{ 'icon-close.svg' | inline_asset_content }}
+          </button>
           <input name="options[prefix]" type="hidden" value="last">
         </div>
-        <div
-          id="InspoHeaderSearchResults-{{ section.id }}"
-          class="inspo-inline-search__results"
-          role="listbox"
-          hidden
-        ></div>
       </form>
     </inspo-inline-search>
   </div>
 </{{ header_tag }}>
+
+{%- liquid
+  assign inspo_search_collection = collections['50-ml-fragrances']
+  if inspo_search_collection == blank
+    assign inspo_search_collection = collections.all
+  endif
+-%}
+<section id="InspoInlineSearchPage-{{ section.id }}" class="inspo-search-page" data-inspo-search-page hidden>
+  <div class="page-width">
+    <header class="inspo-search-page__header">
+      <p class="inspo-search-page__eyebrow">SEARCH RESULTS</p>
+      <h2>Results for “<span data-inspo-search-query></span>”</h2>
+      <p class="inspo-search-page__status" role="status" aria-live="polite" data-inspo-search-status></p>
+    </header>
+    <div class="inspo-search-grid" data-inspo-search-grid>
+      {%- for product in inspo_search_collection.products limit: 50 -%}
+        {%- liquid
+          assign selected_variant = product.selected_or_first_available_variant
+          assign collection_titles = product.collections | map: 'title' | join: ' '
+          capture search_terms
+            echo product.title
+            echo ' '
+            echo product.product_type
+            echo ' '
+            echo product.tags | join: ' '
+            echo ' '
+            echo collection_titles
+            echo ' '
+            echo product.description | strip_html
+          endcapture
+        -%}
+        <article class="inspo-search-card" data-inspo-search-card data-search="{{ search_terms | downcase | strip | escape }}" hidden>
+          <a class="inspo-search-card__media" href="{{ product.url }}">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: product.title, widths: '260, 420, 620, 900', sizes: '(max-width: 749px) 46vw, 23vw' }}
+            {%- endif -%}
+          </a>
+          <div class="inspo-search-card__details">
+            <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+            <p class="inspo-search-card__price">{{ product.price | money_with_currency }}</p>
+            {%- form 'product', product -%}
+              <input type="hidden" name="id" value="{{ selected_variant.id }}">
+              <button class="button button--secondary" type="submit" name="add" {% unless selected_variant.available %}disabled{% endunless %}>
+                {%- if selected_variant.available -%}
+                  {{ 'products.product.add_to_cart' | t }}
+                {%- else -%}
+                  {{ 'products.product.sold_out' | t }}
+                {%- endif -%}
+              </button>
+            {%- endform -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    <div class="inspo-search-empty" data-inspo-search-empty hidden>
+      <h3>No scents found</h3>
+      <p>Try another fragrance, note or inspiration.</p>
+      <button class="button button--secondary" type="button" data-inspo-view-all>VIEW ALL SCENTS</button>
+    </div>
+  </div>
+</section>
 
 {%- if settings.cart_type == 'notification' -%}
   {%- render 'cart-notification',
@@ -551,16 +687,26 @@
   class InspoInlineSearch extends HTMLElement {
     connectedCallback() {
       this.input = this.querySelector('input[type="search"]');
-      this.results = this.querySelector('.inspo-inline-search__results');
-      this.controller = null;
+      this.clearButton = this.querySelector('[data-inspo-search-clear]');
+      this.page = document.querySelector('[data-inspo-search-page]');
+      this.grid = this.page?.querySelector('[data-inspo-search-grid]');
+      this.cards = this.page ? [...this.page.querySelectorAll('[data-inspo-search-card]')] : [];
+      this.queryLabel = this.page?.querySelector('[data-inspo-search-query]');
+      this.status = this.page?.querySelector('[data-inspo-search-status]');
+      this.empty = this.page?.querySelector('[data-inspo-search-empty]');
+      this.viewAll = this.page?.querySelector('[data-inspo-view-all]');
       this.timer = null;
+      this.latestQuery = '';
+      this.input.value = '';
 
       this.input.addEventListener('input', () => {
         window.clearTimeout(this.timer);
         const query = this.input.value.trim();
+        this.clearButton.hidden = !query;
+        this.latestQuery = query;
 
         if (!query) {
-          this.close();
+          this.reset();
           return;
         }
 
@@ -569,52 +715,49 @@
 
       this.input.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
-          this.close();
-          this.input.blur();
+          this.clear();
         }
       });
 
-      document.addEventListener('click', (event) => {
-        if (!this.contains(event.target)) this.close();
-      });
+      this.clearButton.addEventListener('click', () => this.clear());
+      this.viewAll?.addEventListener('click', () => this.clear());
     }
 
-    async search(query) {
-      if (this.controller) this.controller.abort();
-      this.controller = new AbortController();
+    search(query) {
+      if (!this.page || query !== this.latestQuery) return;
+      const normalized = query.toLocaleLowerCase();
+      let matches = 0;
 
-      const parameters = new URLSearchParams({
-        q: query,
-        'resources[type]': 'product',
-        'resources[limit]': '6',
-        'resources[options][unavailable_products]': 'last',
-        section_id: 'predictive-search'
+      this.cards.forEach((card) => {
+        const matchesQuery = card.dataset.search.includes(normalized);
+        card.hidden = !matchesQuery;
+        if (matchesQuery) matches += 1;
       });
 
-      try {
-        const response = await fetch(`${this.dataset.url}?${parameters.toString()}`, {
-          signal: this.controller.signal
-        });
-
-        if (!response.ok) throw new Error(response.status);
-        const markup = await response.text();
-        const documentFragment = new DOMParser().parseFromString(markup, 'text/html');
-        const content = documentFragment.querySelector('#shopify-section-predictive-search');
-
-        this.results.innerHTML = content ? content.innerHTML : '';
-        this.results.querySelectorAll('a').forEach((link) => link.setAttribute('tabindex', '0'));
-        this.results.hidden = false;
-        this.input.setAttribute('aria-expanded', 'true');
-      } catch (error) {
-        if (error.name !== 'AbortError') this.close();
-      }
+      this.queryLabel.textContent = query;
+      this.status.textContent = `${matches} ${matches === 1 ? 'scent' : 'scents'} found`;
+      this.grid.hidden = matches === 0;
+      this.empty.hidden = matches !== 0;
+      this.page.hidden = false;
+      document.documentElement.classList.add('inspo-search-mode');
     }
 
-    close() {
-      if (this.controller) this.controller.abort();
-      this.results.hidden = true;
-      this.results.innerHTML = '';
-      this.input.setAttribute('aria-expanded', 'false');
+    reset() {
+      window.clearTimeout(this.timer);
+      this.latestQuery = '';
+      this.page.hidden = true;
+      this.cards.forEach((card) => { card.hidden = true; });
+      this.grid.hidden = false;
+      this.empty.hidden = true;
+      this.status.textContent = '';
+      document.documentElement.classList.remove('inspo-search-mode');
+    }
+
+    clear() {
+      this.input.value = '';
+      this.clearButton.hidden = true;
+      this.reset();
+      this.input.focus();
     }
   }
 
