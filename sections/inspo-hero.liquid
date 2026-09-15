@@ -31,10 +31,16 @@
     {%- endif -%}
 
     <div class="inspo-hero__quote">
-      <p>Luxury-inspired scents,<br><span>without the luxury price.</span></p>
+      <h1>Luxury-inspired scents.<span>Without the luxury markup.</span></h1>
+      <p>Premium fragrances inspired by iconic scent profiles—without the designer price tag.</p>
     </div>
   </div>
 </section>
+
+{% stylesheet %}
+.inspo-hero{background:#1d130c}.inspo-hero__frame{position:relative;overflow:hidden;max-width:1600px;margin:0 auto}.inspo-hero__image{display:block;width:100%;height:auto;object-fit:contain}.inspo-hero__quote{position:absolute;top:50%;left:clamp(2rem,6vw,8rem);max-width:min(42rem,38vw);transform:translateY(-50%);color:#fff6e6;text-shadow:0 2px 12px rgba(0,0,0,.26)}.inspo-hero__quote h1{margin:0;color:#fff6e6;font-size:clamp(2.6rem,4vw,5.6rem);font-weight:400;line-height:1.04}.inspo-hero__quote h1 span{display:block;color:#e7c783}.inspo-hero__quote p{margin:1rem 0 0;max-width:40rem;font-size:clamp(1.2rem,1.5vw,1.7rem);line-height:1.45}
+@media(max-width:749px){.inspo-hero__frame{display:flex;flex-direction:column}.inspo-hero__quote{position:static;order:2;max-width:none;padding:1.5rem 1.6rem 1.7rem;transform:none;text-align:center;text-shadow:none}.inspo-hero__quote h1{font-size:2.75rem}.inspo-hero__quote p{margin:.75rem auto 0;max-width:34rem;font-size:1.18rem}.inspo-hero__image{order:1;width:100%;height:auto}}
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -49,3 +55,4 @@
   ]
 }
 {% endschema %}
+
