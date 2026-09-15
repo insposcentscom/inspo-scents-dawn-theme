@@ -9,6 +9,23 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
+  .cart__payment-icons {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+    overflow: hidden;
+  }
+
+  .cart__payment-icon {
+    flex: 0 1 38px;
+    width: min(38px, 12vw);
+    height: auto;
+    min-width: 0;
+  }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
@@ -117,13 +134,12 @@
                 >
                   {{ 'sections.cart.checkout' | t }}
                 </button>
-              </div>
-
-              {%- if additional_checkout_buttons -%}
-                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
-                  {{ content_for_additional_checkout_buttons }}
+                <div class="cart__payment-icons" aria-label="Accepted payment methods">
+                  {%- for type in shop.enabled_payment_types -%}
+                    {{ type | payment_type_svg_tag: class: 'cart__payment-icon' }}
+                  {%- endfor -%}
                 </div>
-              {%- endif -%}
+              </div>
           {%- endcase -%}
         {% endfor %}
 
