@@ -55,18 +55,28 @@
           <ul class="grid product-grid grid--2-col-tablet-down grid--4-col-desktop" role="list">
             {%- for product in featured.products limit: section.settings.products_to_show -%}
               <li class="grid__item">
-                {% render 'card-product',
-                  card_product: product,
-                  media_aspect_ratio: 'portrait',
-                  image_shape: 'default',
-                  show_secondary_image: false,
-                  show_vendor: false,
-                  show_rating: false,
-                  lazy_load: true,
-                  skip_styles: false,
-                  quick_add: 'standard',
-                  section_id: section.id
-                %}
+                <article class="inspo-product-card">
+                  <a class="inspo-product-card__media" href="{{ product.url }}">
+                    {%- if product.featured_image -%}
+                      {{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: product.title, widths: '260, 420, 620, 900', sizes: '(max-width: 749px) 46vw, 23vw' }}
+                    {%- endif -%}
+                  </a>
+                  <div class="inspo-product-card__details">
+                    <h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+                    <p>{{ product.price | money_with_currency }}</p>
+                    {%- assign selected_variant = product.selected_or_first_available_variant -%}
+                    {%- form 'product', product -%}
+                      <input type="hidden" name="id" value="{{ selected_variant.id }}">
+                      <button class="button button--secondary" type="submit" name="add" {% unless selected_variant.available %}disabled{% endunless %}>
+                        {%- if selected_variant.available -%}
+                          {{ 'products.product.add_to_cart' | t }}
+                        {%- else -%}
+                          {{ 'products.product.sold_out' | t }}
+                        {%- endif -%}
+                      </button>
+                    {%- endform -%}
+                  </div>
+                </article>
               </li>
             {%- endfor -%}
           </ul>
@@ -189,10 +199,28 @@
   .inspo-art--soft{background:radial-gradient(circle at 50% 50%,#fffaf1,#d8c8b3)}.inspo-art--soft:before{width:42%;height:42%;border-radius:50%;left:29%;top:29%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(226,211,193,.4));box-shadow:0 0 2rem rgba(255,255,255,.8)}
   .inspo-art--balanced{background:linear-gradient(145deg,#d5dccb,#8c9a78)}.inspo-art--balanced:before,.inspo-art--balanced:after{width:28%;height:52%;bottom:18%;border-radius:100% 0 100% 0;background:#5f7854}.inspo-art--balanced:before{left:28%;transform:rotate(-28deg)}.inspo-art--balanced:after{right:24%;transform:scaleX(-1) rotate(-28deg)}
   .inspo-art--bold{background:radial-gradient(circle at 50% 70%,#9b5c24,#23170f 70%)}.inspo-art--bold:before{width:32%;height:54%;left:34%;bottom:16%;background:linear-gradient(#d7aa62,#6c3e1d);clip-path:polygon(50% 0,88% 28%,100% 100%,0 100%,12% 28%)}.inspo-art--bold:after{inset:0;background:radial-gradient(circle at 50% 58%,rgba(244,190,94,.42),transparent 22%)}
-  .inspo-result{text-align:center}.inspo-result__note{margin:-1.2rem auto 2.4rem;opacity:.72}.inspo-result__cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;margin:0 0 2.6rem}.inspo-result-card{min-width:0;color:inherit;display:flex;flex-direction:column;gap:.65rem;text-decoration:none;text-align:left}.inspo-result-card__media{display:block;overflow:hidden;border-radius:1.2rem;background:#efe7dc;aspect-ratio:4/5}.inspo-result-card__media img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;padding:.7rem}.inspo-result-card__title{font-weight:700;font-size:1.45rem;line-height:1.25}.inspo-result-card strong{font-size:1.25rem}
+  .inspo-panel .product-grid{align-items:stretch}
+  .inspo-product-card{display:flex;height:100%;flex-direction:column;background:#fffaf1;border:1px solid rgba(37,28,17,.1);border-radius:1.4rem;overflow:hidden}
+  .inspo-product-card__media{display:block;aspect-ratio:4/5;background:#f2eadf;overflow:hidden}
+  .inspo-product-card__media img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;padding:1rem}
+  .inspo-product-card__details{display:flex;flex:1;flex-direction:column;padding:1.3rem}
+  .inspo-product-card__details h3{margin:0 0 .7rem;font-size:1.55rem;line-height:1.25}
+  .inspo-product-card__details h3 a{color:#251c11;text-decoration:none}
+  .inspo-product-card__details p{margin:.2rem 0 1.2rem;font-size:1.35rem}
+  .inspo-product-card__details form{margin-top:auto}
+  .inspo-product-card__details .button{width:100%;min-height:4.2rem}
+  .inspo-choice__art:before,.inspo-choice__art:after,.inspo-choice__art i,.inspo-choice__art b,.inspo-choice__art em{display:none!important}
+  .inspo-art--citrus,.inspo-art--amber,.inspo-art--woods,.inspo-art--fruit,.inspo-art--day,.inspo-art--night,.inspo-art--refined,.inspo-art--celebrate,.inspo-art--soft,.inspo-art--balanced,.inspo-art--bold{background-repeat:no-repeat;background-color:#e8d8bf}
+  .inspo-art--citrus,.inspo-art--amber,.inspo-art--woods,.inspo-art--fruit{background-image:url('https://cdn.shopify.com/s/files/1/1021/5928/6565/files/inspo-scent-finder-families.png?v=1789452493');background-size:200% 200%}
+  .inspo-art--citrus{background-position:0 0}.inspo-art--amber{background-position:100% 0}.inspo-art--woods{background-position:0 100%}.inspo-art--fruit{background-position:100% 100%}
+  .inspo-art--day,.inspo-art--night,.inspo-art--refined,.inspo-art--celebrate{background-image:url('https://cdn.shopify.com/s/files/1/1021/5928/6565/files/inspo-scent-finder-settings.png?v=1789452484');background-size:200% 200%}
+  .inspo-art--day{background-position:0 0}.inspo-art--night{background-position:100% 0}.inspo-art--refined{background-position:0 100%}.inspo-art--celebrate{background-position:100% 100%}
+  .inspo-art--soft,.inspo-art--balanced,.inspo-art--bold{background-image:url('https://cdn.shopify.com/s/files/1/1021/5928/6565/files/inspo-scent-finder-intensity.png?v=1789452502');background-size:300% 100%}
+  .inspo-art--soft{background-position:0 50%}.inspo-art--balanced{background-position:50% 50%}.inspo-art--bold{background-position:100% 50%}
+    .inspo-result{text-align:center}.inspo-result__note{margin:-1.2rem auto 2.4rem;opacity:.72}.inspo-result__cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;margin:0 0 2.6rem}.inspo-result-card{min-width:0;color:inherit;display:flex;flex-direction:column;gap:.65rem;text-decoration:none;text-align:left}.inspo-result-card__media{display:block;overflow:hidden;border-radius:1.2rem;background:#efe7dc;aspect-ratio:4/5}.inspo-result-card__media img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;padding:.7rem}.inspo-result-card__title{font-weight:700;font-size:1.45rem;line-height:1.25}.inspo-result-card strong{font-size:1.25rem}
   .inspo-accords{position:relative;overflow:hidden;background:#21180f;color:#fff8ec;padding:clamp(5rem,8vw,9rem) 0;text-align:center}.inspo-accords__veil{position:absolute;inset:0;background:radial-gradient(circle at 18% 24%,rgba(231,174,83,.18),transparent 26%),radial-gradient(circle at 78% 72%,rgba(146,78,42,.22),transparent 30%);opacity:.8}.inspo-accords__content{position:relative;z-index:1;max-width:1000px}.inspo-accords h2{margin:1rem auto 3rem;color:#fff8ec;font-size:clamp(3rem,5vw,5.7rem);line-height:1.05}.inspo-note-scenes{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;opacity:.42}.inspo-note-scene{position:relative;display:block;aspect-ratio:16/8;border-radius:1.4rem;overflow:hidden;border:1px solid rgba(255,255,255,.12)}.inspo-note-scene--bergamot{background:radial-gradient(circle at 35% 55%,#d9b34c 0 14%,transparent 15%),linear-gradient(145deg,#725f2b,#243a28)}.inspo-note-scene--fruit{background:radial-gradient(circle at 35% 55%,#b7333e 0 15%,transparent 16%),radial-gradient(circle at 63% 45%,#d99138 0 13%,transparent 14%),linear-gradient(145deg,#5b3327,#2b1b19)}.inspo-note-scene--amber{background:radial-gradient(circle at 50% 55%,#d8903c 0 16%,transparent 17%),linear-gradient(145deg,#6f3f1f,#24140d)}.inspo-note-scene--woods{background:linear-gradient(105deg,transparent 35%,#805a37 36% 46%,transparent 47% 55%,#4f3422 56% 66%,transparent 67%),linear-gradient(145deg,#61452f,#1f1711)}
   @media(max-width:749px){#shop-fragrances-{{ section.id }}{padding-top:3.2rem}.inspo-tabs{justify-content:flex-start;margin-bottom:2.5rem}.inspo-tab{font-size:1rem;padding:.9rem 1.3rem}.inspo-finder{padding:2rem 1.4rem;border-radius:1.4rem}.inspo-choices,.inspo-choices--three{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}.inspo-choice>span:last-child{padding:1rem;font-size:1.12rem}.inspo-result__cards{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:1rem;padding:.2rem .2rem 1rem}.inspo-result-card{flex:0 0 78%;scroll-snap-align:start}.inspo-result-card__media{aspect-ratio:4/5}.inspo-note-scenes{grid-template-columns:repeat(2,1fr)}.inspo-accords{padding:5rem 0}.inspo-accords h2{font-size:3.2rem}}
-  @media(max-width:420px){.inspo-choices,.inspo-choices--three{grid-template-columns:1fr 1fr}.inspo-choice__art{aspect-ratio:1.15}.inspo-result-card{flex-basis:84%}}
+  @media(max-width:420px){.inspo-choices,.inspo-choices--three{grid-template-columns:1fr 1fr}.inspo-choice__art{aspect-ratio:1.15}.inspo-result-card{flex-basis:84%}.inspo-product-card__media{aspect-ratio:4/5}.inspo-product-card__details{padding:1rem}.inspo-product-card__details h3{font-size:1.25rem}.inspo-product-card__details .button{font-size:1.1rem;padding:0 .6rem}}
 </style>
 
 <script>
