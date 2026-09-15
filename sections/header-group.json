@@ -17,10 +17,10 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "50 ml Eau de Parfum · Every fragrance $39.99",
+            "text": "Free shipping on orders $99+",
             "text_alignment": "center",
             "color_scheme": "scheme-3",
-            "link": "shopify://collections/50-ml-fragrances"
+            "link": ""
           }
         }
       },
