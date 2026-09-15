@@ -97,3 +97,12 @@
   .inspo-welcome__close{right:.7rem;top:.7rem;width:3.7rem;height:3.7rem;font-size:2.3rem}
   .inspo-footer{padding:4rem 0 1.5rem}.inspo-footer__grid{grid-template-columns:1fr;gap:2rem;padding-bottom:2.5rem}.inspo-footer__brand-logo{width:21rem}.inspo-footer__payments{align-items:flex-start;flex-direction:column}.inspo-footer__payments .list-payment{justify-content:flex-start}.footer:before{top:30%;font-size:7rem}.inspo-footer__artwork-image{object-position:58% center;opacity:.11}
 }
+
+
+body .inspo-footer{padding:0!important;text-align:center!important}
+body .inspo-footer .inspo-footer__grid{display:flex!important;grid-template-columns:none!important;max-width:980px!important;flex-direction:column!important;align-items:center!important;gap:2.2rem!important;border-bottom:0!important;padding-top:3.2rem!important;padding-bottom:2.4rem!important}
+body .inspo-footer .inspo-footer__brand,body .inspo-footer .inspo-footer__group{flex:0 0 100%!important;width:100%!important;max-width:none!important;text-align:center!important}
+body .inspo-footer .inspo-footer__brand p:not(.inspo-footer__logo){max-width:none!important;margin:0 0 .65rem!important}
+body .inspo-footer .inspo-footer__links,body .inspo-footer .inspo-footer__social-row{display:flex!important;width:100%!important;flex-flow:row wrap!important;justify-content:center!important;align-items:center!important}
+@media(max-width:749px){body .inspo-footer .inspo-footer__grid{gap:1.65rem!important;padding-top:2.2rem!important;padding-bottom:1.8rem!important}}
+
