@@ -125,6 +125,26 @@
     justify-self: end;
   }
 
+  .inspo-account-left {
+    grid-area: left-icons;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+  }
+
+  .inspo-account-left .header__icon {
+    margin: 0;
+  }
+
+  .header__heading,
+  .header__heading-link {
+    grid-area: heading !important;
+    justify-self: center !important;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
   .header__inline-menu {
     grid-area: navigation;
     justify-self: center;
@@ -350,6 +370,18 @@
       endif
     -%}
 
+    {%- if shop.customer_accounts_enabled -%}
+      <div class="inspo-account-left">
+        <shopify-account
+          menu="{{ settings.customer_account_menu | default: 'customer-account-main-menu' }}"
+          class="header__icon header__icon--account link focus-inset"
+        >
+          <span slot="signed-out-avatar" class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+          <span slot="signed-out-avatar" class="visually-hidden">{{ 'customer.log_in' | t }}</span>
+        </shopify-account>
+      </div>
+    {%- endif -%}
+
     {%- if section.settings.logo_position != 'middle-center' -%}
       {%- if request.page_type == 'index' -%}
         <h1 class="header__heading">
@@ -452,16 +484,6 @@
       </div>
       <!-- Search removed for Inspo Scents -->
 
-      {%- if shop.customer_accounts_enabled -%}
-        <shopify-account
-          menu="{{ settings.customer_account_menu | default: 'customer-account-main-menu' }}"
-          class="header__icon header__icon--account link focus-inset"
-        >
-          <span slot="signed-out-avatar" class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
-          <span slot="signed-out-avatar" class="visually-hidden">{{ 'customer.log_in' | t }}</span>
-        </shopify-account>
-      {%- endif -%}
-
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when '@app' -%}
@@ -498,7 +520,7 @@
             class="inspo-inline-search__input"
             type="search"
             name="q"
-            placeholder="{{ 'general.search.search' | t }}"
+            placeholder="Search fragrances, notes or inspirations"
             autocomplete="off"
             role="combobox"
             aria-expanded="false"
