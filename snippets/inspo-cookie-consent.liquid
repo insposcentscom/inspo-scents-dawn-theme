@@ -31,7 +31,7 @@
       bar.hidden = true;
       const choice = accepted ? 'accepted' : 'denied';
       try { localStorage.setItem('inspo_cookie_consent', choice); } catch (error) {}
-      document.cookie = `inspo_cookie_consent=${choice}; max-age=31536000; path=/; SameSite=Lax`;
+      document.cookie = `inspo_cookie_consent=${choice}; max-age=31536000; path=/; SameSite=Lax; Secure`;
       if (privacy?.setTrackingConsent) {
         try { privacy.setTrackingConsent({ analytics: accepted, marketing: accepted, preferences: accepted, sale_of_data: accepted }, () => {}); } catch (error) {}
       }
