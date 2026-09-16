@@ -173,11 +173,31 @@
       }
     });
 
-    document.addEventListener('submit', (event) => {
+    document.addEventListener('submit', async (event) => {
       const form = event.target.closest('form[action*="/cart/add"]');
       if (!form || form.closest('product-form')) return;
-      const variantId = form.querySelector('[name="id"]')?.value;
-      if (!variantId) return;
+      let variantId = form.querySelector('[name="id"]')?.value;
+      if (!variantId) {
+        const productLink = form.closest('article')?.querySelector('a[href*="/products/"]');
+        if (!productLink) return;
+        event.preventDefault();
+        const button = form.querySelector('[type="submit"]');
+        if (button) button.disabled = true;
+        try {
+          const product = await fetch(`${productLink.pathname}.js`).then((response) => response.json());
+          variantId = product.variants.find((variant) => variant.available)?.id;
+          if (!variantId) return;
+          await fetch(`${root}cart/add.js`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+          });
+          await syncRewards({ showPopup: true });
+        } finally {
+          if (button) button.disabled = false;
+        }
+        return;
+      }
       sessionStorage.setItem('inspoRewardPendingVariant', variantId);
       window.setTimeout(() => {
         if (document.visibilityState === 'visible') syncRewards({ showPopup: true });
