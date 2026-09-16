@@ -20,15 +20,19 @@
 <script>
   (() => {
     const bar = document.getElementById('InspoCookieConsent');
-    const savedChoice = localStorage.getItem('inspo_cookie_consent');
+    let savedChoice = '';
+    try { savedChoice = localStorage.getItem('inspo_cookie_consent') || ''; } catch (error) {}
+    if (!savedChoice) savedChoice = document.cookie.match(/(?:^|; )inspo_cookie_consent=([^;]*)/)?.[1] || '';
     const privacy = window.Shopify?.customerPrivacy;
     if (!savedChoice) bar.hidden = false;
 
     const saveConsent = (accepted) => {
-      localStorage.setItem('inspo_cookie_consent', accepted ? 'accepted' : 'denied');
       bar.hidden = true;
+      const choice = accepted ? 'accepted' : 'denied';
+      try { localStorage.setItem('inspo_cookie_consent', choice); } catch (error) {}
+      document.cookie = `inspo_cookie_consent=${choice}; max-age=31536000; path=/; SameSite=Lax`;
       if (privacy?.setTrackingConsent) {
-        privacy.setTrackingConsent({ analytics: accepted, marketing: accepted, preferences: accepted, sale_of_data: accepted }, () => {});
+        try { privacy.setTrackingConsent({ analytics: accepted, marketing: accepted, preferences: accepted, sale_of_data: accepted }, () => {}); } catch (error) {}
       }
     };
 
