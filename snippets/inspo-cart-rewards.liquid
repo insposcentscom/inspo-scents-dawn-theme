@@ -199,9 +199,9 @@
     });
 
     const handleCardAdd = async (event) => {
-      const addButton = event.target.closest('.inspo-product-card form[action*="/cart/add"] [type="submit"]');
-      const form = addButton?.closest('form[action*="/cart/add"]');
-      if (!form || !form.closest('.inspo-product-card')) return;
+      const addButton = event.target.closest('[type="submit"]');
+      const form = addButton?.closest('form');
+      if (!form || !addButton.closest('.inspo-product-card') || !form.action.includes('/cart/add')) return;
       event.preventDefault();
       let variantId = form.querySelector('[name="id"]')?.value;
       if (!variantId) {
