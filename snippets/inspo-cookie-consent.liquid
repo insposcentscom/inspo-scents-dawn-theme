@@ -8,8 +8,8 @@
     <p>We use cookies to operate the store, understand visits, and improve your experience. Read our <a href="/policies/privacy-policy">Privacy Policy</a>.</p>
   </div>
   <div class="inspo-cookie__actions">
-      <button type="button" class="button button--secondary" data-cookie-deny onclick="window.inspoCookieConsent(false)">Deny optional cookies</button>
-      <button type="button" class="button" data-cookie-accept onclick="window.inspoCookieConsent(true)">Accept cookies</button>
+      <button type="button" class="button button--secondary" data-cookie-deny>Deny optional cookies</button>
+      <button type="button" class="button" data-cookie-accept>Accept cookies</button>
   </div>
 </aside>
 
@@ -37,6 +37,7 @@
       }
     };
 
-    window.inspoCookieConsent = saveConsent;
+    bar.querySelector('[data-cookie-accept]').addEventListener('click', () => saveConsent(true));
+    bar.querySelector('[data-cookie-deny]').addEventListener('click', () => saveConsent(false));
   })();
 </script>
