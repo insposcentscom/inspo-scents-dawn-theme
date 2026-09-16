@@ -63,7 +63,7 @@
       const updates = {};
       if (quantity >= 3) {
         if (!gifts.length) {
-          await fetch(`${root}cart/add.js`, {
+          await fetch(`${root}cart/add`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
             body: JSON.stringify({ items: [{ id: giftVariantId, quantity: 1, properties: { _inspo_reward_gift: 'true' } }] })
@@ -75,7 +75,7 @@
         gifts.forEach((item) => { updates[item.key] = 0; });
       }
       if (Object.keys(updates).length && gifts.some((item, index) => item.quantity !== (quantity >= 3 && index === 0 ? 1 : 0))) {
-        await fetch(`${root}cart/update.js`, {
+        await fetch(`${root}cart/update`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ updates })
@@ -221,7 +221,7 @@
       const button = addButton;
       if (button) button.disabled = true;
       try {
-        const response = await fetch(`${root}cart/add.js`, {
+        const response = await fetch(`${root}cart/add`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
