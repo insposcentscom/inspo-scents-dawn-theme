@@ -221,10 +221,13 @@
       const button = addButton;
       if (button) button.disabled = true;
       try {
+        const addData = new FormData();
+        addData.append('id', String(variantId));
+        addData.append('quantity', '1');
         const response = await fetch(`${root}cart/add`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+          headers: { Accept: 'application/javascript', 'X-Requested-With': 'XMLHttpRequest' },
+          body: addData
         });
         if (!response.ok) throw new Error('Unable to add this fragrance.');
         await syncRewards({ showPopup: true });
