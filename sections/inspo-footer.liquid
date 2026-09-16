@@ -11,7 +11,7 @@
     </div>
     <div class="inspo-footer__group">
       <h3>Customer Service</h3>
-      <div class="inspo-footer__links"><a href="/pages/contact">Contact Us</a><a href="/pages/return-policy">Order Issues</a><a href="/account">Sign in / Create account</a></div>
+      <div class="inspo-footer__links"><a href="/pages/contact">Contact Us</a><a href="/pages/return-policy">Order Issues</a>{%- if shop.customer_accounts_enabled -%}<a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" rel="nofollow">{%- if customer -%}My account{%- else -%}Sign in / Create account{%- endif -%}</a>{%- endif -%}</div>
     </div>
     <div class="inspo-footer__group inspo-footer__socials">
       <h3>Socials</h3>
