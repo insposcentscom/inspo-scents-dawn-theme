@@ -26,10 +26,9 @@
 
     const saveConsent = (accepted) => {
       localStorage.setItem('inspo_cookie_consent', accepted ? 'accepted' : 'denied');
+      bar.hidden = true;
       if (privacy?.setTrackingConsent) {
-        privacy.setTrackingConsent({ analytics: accepted, marketing: accepted, preferences: accepted, sale_of_data: accepted }, () => { bar.hidden = true; });
-      } else {
-        bar.hidden = true;
+        privacy.setTrackingConsent({ analytics: accepted, marketing: accepted, preferences: accepted, sale_of_data: accepted }, () => {});
       }
     };
 
