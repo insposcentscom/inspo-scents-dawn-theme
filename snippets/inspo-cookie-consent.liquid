@@ -22,8 +22,7 @@
     const bar = document.getElementById('InspoCookieConsent');
     const savedChoice = localStorage.getItem('inspo_cookie_consent');
     const privacy = window.Shopify?.customerPrivacy;
-    const shouldShow = privacy?.shouldShowBanner ? privacy.shouldShowBanner() : !savedChoice;
-    if (!savedChoice && shouldShow) bar.hidden = false;
+    if (!savedChoice) bar.hidden = false;
 
     const saveConsent = (accepted) => {
       localStorage.setItem('inspo_cookie_consent', accepted ? 'accepted' : 'denied');
