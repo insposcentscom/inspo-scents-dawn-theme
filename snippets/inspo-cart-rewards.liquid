@@ -1,0 +1,197 @@
+{% doc %}
+  Renders the Inspo Scents cart reward notification and persistent cart progress meter.
+{% enddoc %}
+
+<aside id="InspoRewardPopup" class="inspo-reward-popup" aria-live="polite" aria-hidden="true">
+  <button class="inspo-reward-popup__close" type="button" aria-label="Close rewards update">&times;</button>
+  <p class="inspo-reward-popup__eyebrow">INSPO SCENTS REWARDS</p>
+  <h2 class="inspo-reward-popup__title"></h2>
+  <p class="inspo-reward-popup__message"></p>
+  <div class="inspo-reward-popup__meter"></div>
+  <button class="inspo-reward-popup__action button button--secondary" type="button"></button>
+</aside>
+
+<template id="InspoRewardMeterTemplate">
+  <section class="inspo-reward-meter" aria-live="polite">
+    <p class="inspo-reward-meter__eyebrow">INSPO SCENTS REWARDS</p>
+    <p class="inspo-reward-meter__message"></p>
+    <div class="inspo-reward-meter__track" aria-hidden="true"><span></span></div>
+    <div class="inspo-reward-meter__steps" aria-hidden="true">
+      <span><b>1</b><small>START</small></span>
+      <span><b>2</b><small>FREE SHIPPING</small></span>
+      <span><b>3</b><small>FREE GIFT</small></span>
+    </div>
+  </section>
+</template>
+
+<style>
+  .inspo-reward-popup,.inspo-reward-meter{--reward-gold:#c8a15a;--reward-cream:#f8f1e5;--reward-dark:#17110c}.inspo-reward-popup{position:fixed;right:2.4rem;bottom:2.4rem;z-index:1000;width:min(36rem,calc(100vw - 3.2rem));padding:2rem;background:var(--reward-dark);color:var(--reward-cream);border:1px solid rgba(200,161,90,.65);border-radius:1.2rem;box-shadow:0 10px 28px rgba(0,0,0,.18);opacity:0;visibility:hidden;transform:translateY(1.2rem);transition:opacity .2s ease,transform .2s ease,visibility .2s}.inspo-reward-popup.is-visible{opacity:1;visibility:visible;transform:translateY(0)}.inspo-reward-popup__close{position:absolute;top:.8rem;right:1rem;width:3rem;height:3rem;padding:0;border:0;background:transparent;color:var(--reward-cream);font-size:2.3rem;line-height:1;cursor:pointer}.inspo-reward-popup__eyebrow,.inspo-reward-meter__eyebrow{margin:0 3rem .7rem 0;color:var(--reward-gold);font-size:1.1rem;letter-spacing:.16em}.inspo-reward-popup__title{margin:0 3rem .5rem 0;color:var(--reward-cream);font-size:1.7rem;letter-spacing:.04em}.inspo-reward-popup__message{margin:0 0 1.4rem;font-size:1.35rem;line-height:1.45}.inspo-reward-popup__action{min-height:4rem;margin-top:1.5rem;padding:.8rem 1.4rem;border-color:var(--reward-gold);color:var(--reward-cream);background:transparent;font-size:1.1rem}.inspo-reward-meter{margin:1.6rem 0;padding:1.5rem;border:1px solid rgba(200,161,90,.5);border-radius:1rem;background:#1b140e;color:var(--reward-cream)}.inspo-reward-meter__message{margin:.2rem 0 1.2rem;font-size:1.25rem;line-height:1.4}.inspo-reward-meter__track{height:.3rem;margin:0 1.2rem;background:rgba(248,241,229,.22);border-radius:1rem;overflow:hidden}.inspo-reward-meter__track span{display:block;width:var(--reward-progress,0%);height:100%;background:var(--reward-gold);transition:width .35s ease}.inspo-reward-meter__steps{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:-.8rem}.inspo-reward-meter__steps span{text-align:center}.inspo-reward-meter__steps b{display:grid;place-items:center;width:2rem;height:2rem;margin:0 auto .5rem;border:1px solid var(--reward-gold);border-radius:50%;background:var(--reward-dark);color:var(--reward-cream);font-size:1rem}.inspo-reward-meter__steps small{display:block;color:var(--reward-cream);font-size:.85rem;line-height:1.2;letter-spacing:.06em}.inspo-reward-popup__meter .inspo-reward-meter{margin:1.2rem 0 0;padding:1.2rem}.inspo-reward-popup__meter .inspo-reward-meter__eyebrow,.inspo-reward-popup__meter .inspo-reward-meter__message{display:none}@media(max-width:749px){.inspo-reward-popup{left:1.6rem;right:1.6rem;bottom:calc(env(safe-area-inset-bottom) + 8.4rem);width:auto;padding:1.7rem}.inspo-reward-popup__message{font-size:1.25rem}.inspo-reward-meter__steps small{font-size:.75rem}}@media(prefers-reduced-motion:reduce){.inspo-reward-popup,.inspo-reward-meter__track span{transition:none}}
+</style>
+
+<script>
+  (() => {
+    if (window.InspoCartRewards) return;
+    window.InspoCartRewards = true;
+
+    const giftVariantId = 53833540534565;
+    const root = window.Shopify?.routes?.root || '/';
+    const popup = document.getElementById('InspoRewardPopup');
+    const template = document.getElementById('InspoRewardMeterTemplate');
+    let closeTimer;
+    let syncing = false;
+
+    const isGift = (item) => Number(item.variant_id) === giftVariantId || item.properties?._inspo_reward_gift === 'true';
+    const isPerfume = (item) => !isGift(item) && String(item.product_type || '').toLowerCase().includes('perfume');
+    const perfumeQuantity = (cart) => cart.items.filter(isPerfume).reduce((sum, item) => sum + item.quantity, 0);
+    const rewardState = (quantity) => quantity >= 3
+      ? { level: 3, title: 'ALL REWARDS UNLOCKED', message: 'Enjoy FREE Shipping + a FREE Car Hanging Air Freshener', action: 'VIEW CART' }
+      : quantity === 2
+        ? { level: 2, title: 'FREE SHIPPING UNLOCKED', message: 'Add 1 more fragrance and your Car Hanging Air Freshener is on us.', action: 'SHOP ANOTHER SCENT' }
+        : { level: Math.max(quantity, 0), title: 'You’re almost there', message: 'Add 1 more fragrance to unlock FREE SHIPPING', action: 'SHOP ANOTHER SCENT' };
+
+    const fetchCart = () => fetch(`${root}cart.js`, { headers: { Accept: 'application/json' } }).then((response) => response.json());
+
+    async function updateGift(cart) {
+      const quantity = perfumeQuantity(cart);
+      const gifts = cart.items.filter(isGift);
+      const updates = {};
+      if (quantity >= 3) {
+        if (!gifts.length) {
+          await fetch(`${root}cart/add.js`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ items: [{ id: giftVariantId, quantity: 1, properties: { _inspo_reward_gift: 'true' } }] })
+          });
+          return true;
+        }
+        gifts.forEach((item, index) => { updates[item.key] = index === 0 ? 1 : 0; });
+      } else {
+        gifts.forEach((item) => { updates[item.key] = 0; });
+      }
+      if (Object.keys(updates).length && gifts.some((item, index) => item.quantity !== (quantity >= 3 && index === 0 ? 1 : 0))) {
+        await fetch(`${root}cart/update.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ updates })
+        });
+        return true;
+      }
+      return false;
+    }
+
+    function fillMeter(meter, quantity) {
+      const state = rewardState(quantity);
+      meter.style.setProperty('--reward-progress', `${Math.min(state.level, 3) / 3 * 100}%`);
+      meter.querySelector('.inspo-reward-meter__message').textContent = state.message;
+      meter.dataset.level = state.level;
+    }
+
+    function injectMeters(quantity) {
+      const targets = document.querySelectorAll('.cart-drawer__footer .totals, .cart__footer .totals, .cart-notification__links');
+      targets.forEach((target) => {
+        let meter = target.previousElementSibling;
+        if (!meter?.matches('[data-inspo-reward-meter]')) {
+          meter = template.content.firstElementChild.cloneNode(true);
+          meter.dataset.inspoRewardMeter = '';
+          target.before(meter);
+        }
+        fillMeter(meter, quantity);
+      });
+    }
+
+    function showPopup(quantity) {
+      const state = rewardState(quantity);
+      popup.querySelector('.inspo-reward-popup__title').textContent = state.title;
+      popup.querySelector('.inspo-reward-popup__message').textContent = state.message;
+      popup.querySelector('.inspo-reward-popup__action').textContent = state.action;
+      let meter = popup.querySelector('.inspo-reward-meter');
+      if (!meter) {
+        meter = template.content.firstElementChild.cloneNode(true);
+        popup.querySelector('.inspo-reward-popup__meter').append(meter);
+      }
+      fillMeter(meter, quantity);
+      popup.dataset.level = state.level;
+      popup.classList.add('is-visible');
+      popup.setAttribute('aria-hidden', 'false');
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(hidePopup, 6000);
+    }
+
+    function hidePopup() {
+      popup.classList.remove('is-visible');
+      popup.setAttribute('aria-hidden', 'true');
+      clearTimeout(closeTimer);
+    }
+
+    async function refreshCartSections() {
+      const sectionIds = ['main-cart-items', 'main-cart-footer'];
+      if (!sectionIds.some((id) => document.getElementById(`shopify-section-${id}`))) return;
+      const response = await fetch(`${root}cart?sections=${sectionIds.join(',')}`);
+      const sections = await response.json();
+      sectionIds.forEach((id) => {
+        const current = document.getElementById(`shopify-section-${id}`);
+        if (!current || !sections[id]) return;
+        const parsed = new DOMParser().parseFromString(sections[id], 'text/html').getElementById(`shopify-section-${id}`);
+        if (parsed) current.innerHTML = parsed.innerHTML;
+      });
+    }
+
+    async function syncRewards(options = {}) {
+      if (syncing) return;
+      syncing = true;
+      try {
+        let cart = await fetchCart();
+        const changed = await updateGift(cart);
+        if (changed) {
+          cart = await fetchCart();
+          await refreshCartSections();
+        }
+        const quantity = perfumeQuantity(cart);
+        injectMeters(quantity);
+        document.dispatchEvent(new CustomEvent('inspo:rewards-updated', { detail: { cart, eligiblePerfumeQty: quantity } }));
+        if (options.showPopup && quantity > 0) showPopup(quantity);
+      } catch (error) {
+        console.error('Inspo rewards update failed', error);
+      } finally {
+        syncing = false;
+      }
+    }
+
+    popup.querySelector('.inspo-reward-popup__close').addEventListener('click', hidePopup);
+    popup.querySelector('.inspo-reward-popup__action').addEventListener('click', () => {
+      const viewCart = Number(popup.dataset.level) >= 3;
+      hidePopup();
+      if (viewCart) {
+        const drawer = document.querySelector('cart-drawer');
+        if (drawer?.open) drawer.open(); else window.location.assign(`${root}cart`);
+        return;
+      }
+      if (window.location.pathname === root || window.location.pathname === '/') {
+        document.querySelector('[id^="shop-fragrances-"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.location.assign(root);
+      }
+    });
+
+    document.addEventListener('submit', (event) => {
+      const form = event.target.closest('form[action*="/cart/add"]');
+      if (!form || form.closest('product-form')) return;
+      const variantId = form.querySelector('[name="id"]')?.value;
+      if (!variantId) return;
+      sessionStorage.setItem('inspoRewardPendingVariant', variantId);
+      window.setTimeout(() => {
+        if (document.visibilityState === 'visible') syncRewards({ showPopup: true });
+      }, 700);
+    }, true);
+
+    if (window.subscribe && window.PUB_SUB_EVENTS?.cartUpdate) {
+      window.subscribe(window.PUB_SUB_EVENTS.cartUpdate, (event) => {
+        syncRewards({ showPopup: event?.source === 'product-form' });
+      });
+    }
+
+    const pendingVariant = sessionStorage.getItem('inspoRewardPendingVariant');
+    if (pendingVariant) sessionStorage.removeItem('inspoRewardPendingVariant');
+    syncRewards({ showPopup: Boolean(pendingVariant) });
+  })();
+</script>
