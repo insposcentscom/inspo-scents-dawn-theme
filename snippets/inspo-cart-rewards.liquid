@@ -173,15 +173,16 @@
       }
     });
 
-    document.addEventListener('submit', async (event) => {
-      const form = event.target.closest('form[action*="/cart/add"]');
+    document.addEventListener('click', async (event) => {
+      const addButton = event.target.closest('form[action*="/cart/add"] [type="submit"]');
+      const form = addButton?.closest('form[action*="/cart/add"]');
       if (!form || form.closest('product-form')) return;
       let variantId = form.querySelector('[name="id"]')?.value;
       if (!variantId) {
         const productLink = form.closest('article')?.querySelector('a[href*="/products/"]');
         if (!productLink) return;
         event.preventDefault();
-        const button = form.querySelector('[type="submit"]');
+        const button = addButton;
         if (button) button.disabled = true;
         try {
           const product = await fetch(`${productLink.pathname}.js`).then((response) => response.json());
