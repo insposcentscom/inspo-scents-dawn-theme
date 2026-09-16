@@ -34,6 +34,12 @@
     window.InspoCartRewards = true;
 
     const giftVariantId = 53833540534565;
+    const perfumeVariants = {
+      'eau-de-parfum-ambar-y-maderas-50ml': 53818972176677,
+      'eau-de-parfum-pure-mist-50ml': 53818972373285,
+      '50ml-eau-de-parfum-glass-bottle': 53818972274981,
+      'earth-eau-de-parfum-moss-undertone': 53818972406053
+    };
     const root = window.Shopify?.routes?.root || '/';
     const popup = document.getElementById('InspoRewardPopup');
     const template = document.getElementById('InspoRewardMeterTemplate');
@@ -204,8 +210,8 @@
         const button = addButton;
         if (button) button.disabled = true;
         try {
-          const product = await fetch(`${productLink.pathname}.js`).then((response) => response.json());
-          variantId = product.variants.find((variant) => variant.available)?.id;
+          const handle = productLink.pathname.split('/products/')[1]?.split('/')[0];
+          variantId = perfumeVariants[handle];
           if (!variantId) return;
         } finally {
           if (!variantId && button) button.disabled = false;
