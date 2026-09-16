@@ -192,8 +192,8 @@
       }
     });
 
-    document.addEventListener('click', async (event) => {
-      const addButton = event.target.closest('form[action*="/cart/add"] [type="submit"]');
+    const handleCardAdd = async (event) => {
+      const addButton = event.currentTarget;
       const form = addButton?.closest('form[action*="/cart/add"]');
       if (!form || form.closest('product-form')) return;
       event.preventDefault();
@@ -227,7 +227,11 @@
       } finally {
         if (button) button.disabled = false;
       }
-    }, true);
+    };
+
+    document.querySelectorAll('form[action*="/cart/add"]:not(product-form form) [type="submit"]').forEach((button) => {
+      button.addEventListener('click', handleCardAdd);
+    });
 
     if (window.subscribe && window.PUB_SUB_EVENTS?.cartUpdate) {
       window.subscribe(window.PUB_SUB_EVENTS.cartUpdate, (event) => {
