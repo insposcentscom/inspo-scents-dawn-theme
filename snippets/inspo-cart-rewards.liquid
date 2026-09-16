@@ -199,6 +199,12 @@
     });
 
     const handleCardAdd = async (event) => {
+      const checkoutButton = event.target.closest('#checkout[name="checkout"]');
+      if (checkoutButton) {
+        event.preventDefault();
+        window.location.assign(`${root}checkout`);
+        return;
+      }
       const addButton = event.target.closest('[type="submit"]');
       const form = addButton?.closest('form');
       if (!form || !addButton.closest('.inspo-product-card') || !form.action.includes('/cart/add')) return;
