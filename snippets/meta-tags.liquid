@@ -1,8 +1,19 @@
 {%- liquid
-  assign og_title = page_title | default: shop.name
+  assign is_home = false
+  if request.page_type == 'index'
+    assign is_home = true
+  endif
+
+  if is_home
+    assign og_title = 'Inspo Scents | Luxury-Inspired Fragrances'
+    assign og_description = 'Shop Inspo Scents for premium luxury-inspired fragrances for men and women. Discover long-lasting scent profiles inspired by iconic perfumery without the luxury markup.'
+  else
+    assign og_title = page_title | default: shop.name
+    assign og_description = page_description | default: shop.description | default: shop.name
+  endif
+
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
-  assign og_description = page_description | default: shop.description | default: shop.name
 
   if request.page_type == 'product'
     assign og_type = 'product'
@@ -13,7 +24,12 @@
   endif
 %}
 
-<meta property="og:site_name" content="{{ shop.name }}">
+{%- if is_home and page_description == blank -%}
+  <meta name="description" content="{{ og_description | escape }}">
+{%- endif -%}
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+
+<meta property="og:site_name" content="Inspo Scents">
 <meta property="og:url" content="{{ og_url }}">
 <meta property="og:title" content="{{ og_title | escape }}">
 <meta property="og:type" content="{{ og_type }}">
@@ -37,3 +53,30 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ og_title | escape }}">
 <meta name="twitter:description" content="{{ og_description | escape }}">
+
+{%- if is_home -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": {{ request.origin | append: '#organization' | json }},
+      "name": "Inspo Scents",
+      "alternateName": ["InspoScents", "insposcents"],
+      "url": {{ request.origin | json }}{% if settings.logo != blank %},
+      "logo": {{ settings.logo | image_url: width: 600 | prepend: 'https:' | json }}{% endif %}
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": {{ request.origin | append: '#website' | json }},
+      "url": {{ request.origin | json }},
+      "name": "Inspo Scents",
+      "alternateName": ["InspoScents", "insposcents"],
+      "publisher": {
+        "@id": {{ request.origin | append: '#organization' | json }}
+      }
+    }
+  </script>
+{%- endif -%}
