@@ -99,6 +99,24 @@
       });
     }
 
+    function updateCartBadge(itemCount) {
+      const cartLink = document.querySelector('a[href$="/cart"].header__icon--cart, a.header__icon--cart');
+      if (!cartLink) return;
+      let bubble = cartLink.querySelector('.cart-count-bubble');
+      if (!itemCount) {
+        bubble?.remove();
+        return;
+      }
+      if (!bubble) {
+        bubble = document.createElement('div');
+        bubble.className = 'cart-count-bubble';
+        bubble.innerHTML = '<span aria-hidden="true"></span><span class="visually-hidden"></span>';
+        cartLink.append(bubble);
+      }
+      bubble.querySelector('[aria-hidden="true"]').textContent = itemCount;
+      bubble.querySelector('.visually-hidden').textContent = `${itemCount} items`;
+    }
+
     function showPopup(quantity) {
       const state = rewardState(quantity);
       popup.querySelector('.inspo-reward-popup__title').textContent = state.title;
@@ -147,9 +165,10 @@
           await refreshCartSections();
         }
         const quantity = perfumeQuantity(cart);
+        updateCartBadge(cart.item_count);
         injectMeters(quantity);
         document.dispatchEvent(new CustomEvent('inspo:rewards-updated', { detail: { cart, eligiblePerfumeQty: quantity } }));
-        if (options.showPopup && quantity > 0) showPopup(quantity);
+        if (options.showPopup && quantity > 0 && !window.location.pathname.endsWith('/cart')) showPopup(quantity);
       } catch (error) {
         console.error('Inspo rewards update failed', error);
       } finally {
@@ -177,32 +196,37 @@
       const addButton = event.target.closest('form[action*="/cart/add"] [type="submit"]');
       const form = addButton?.closest('form[action*="/cart/add"]');
       if (!form || form.closest('product-form')) return;
+      event.preventDefault();
       let variantId = form.querySelector('[name="id"]')?.value;
       if (!variantId) {
         const productLink = form.closest('article')?.querySelector('a[href*="/products/"]');
         if (!productLink) return;
-        event.preventDefault();
         const button = addButton;
         if (button) button.disabled = true;
         try {
           const product = await fetch(`${productLink.pathname}.js`).then((response) => response.json());
           variantId = product.variants.find((variant) => variant.available)?.id;
           if (!variantId) return;
-          await fetch(`${root}cart/add.js`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-            body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
-          });
-          await syncRewards({ showPopup: true });
         } finally {
-          if (button) button.disabled = false;
+          if (!variantId && button) button.disabled = false;
         }
-        return;
       }
-      sessionStorage.setItem('inspoRewardPendingVariant', variantId);
-      window.setTimeout(() => {
-        if (document.visibilityState === 'visible') syncRewards({ showPopup: true });
-      }, 700);
+      if (!variantId) return;
+      const button = addButton;
+      if (button) button.disabled = true;
+      try {
+        const response = await fetch(`${root}cart/add.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+        });
+        if (!response.ok) throw new Error('Unable to add this fragrance.');
+        await syncRewards({ showPopup: true });
+      } catch (error) {
+        console.error('Inspo add to cart failed', error);
+      } finally {
+        if (button) button.disabled = false;
+      }
     }, true);
 
     if (window.subscribe && window.PUB_SUB_EVENTS?.cartUpdate) {
@@ -211,8 +235,6 @@
       });
     }
 
-    const pendingVariant = sessionStorage.getItem('inspoRewardPendingVariant');
-    if (pendingVariant) sessionStorage.removeItem('inspoRewardPendingVariant');
-    syncRewards({ showPopup: Boolean(pendingVariant) });
+    syncRewards();
   })();
 </script>
