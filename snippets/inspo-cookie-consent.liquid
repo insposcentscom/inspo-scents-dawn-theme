@@ -1,0 +1,40 @@
+{% doc %}
+  Renders a privacy consent bar connected to Shopify's customer privacy API.
+{% enddoc %}
+
+<aside id="InspoCookieConsent" class="inspo-cookie" role="dialog" aria-modal="false" aria-labelledby="InspoCookieTitle" hidden>
+  <div class="inspo-cookie__copy">
+    <h2 id="InspoCookieTitle">Your privacy, your choice</h2>
+    <p>We use cookies to operate the store, understand visits, and improve your experience. Read our <a href="/policies/privacy-policy">Privacy Policy</a>.</p>
+  </div>
+  <div class="inspo-cookie__actions">
+    <button type="button" class="button button--secondary" data-cookie-deny>Deny optional cookies</button>
+    <button type="button" class="button" data-cookie-accept>Accept cookies</button>
+  </div>
+</aside>
+
+<style>
+  .inspo-cookie{position:fixed;z-index:1002;left:50%;bottom:1.6rem;display:flex;width:min(96rem,calc(100% - 3.2rem));align-items:center;justify-content:space-between;gap:2rem;padding:1.6rem 2rem;transform:translateX(-50%);border:1px solid rgba(200,161,90,.65);border-radius:1rem;background:#17110c;color:#f8f1e5;box-shadow:0 10px 28px rgba(0,0,0,.2)}.inspo-cookie[hidden]{display:none}.inspo-cookie h2{margin:0 0 .35rem;color:#d6bc85;font-size:1.45rem}.inspo-cookie p{margin:0;max-width:62rem;font-size:1.15rem;line-height:1.45}.inspo-cookie a{color:#f8f1e5;text-decoration:underline}.inspo-cookie__actions{display:flex;flex:0 0 auto;gap:.8rem}.inspo-cookie .button{min-height:4rem;padding:.8rem 1.35rem;font-size:1rem}@media(max-width:749px){.inspo-cookie{bottom:calc(env(safe-area-inset-bottom) + 1rem);align-items:stretch;flex-direction:column;gap:1.2rem;padding:1.4rem}.inspo-cookie__actions{display:grid;grid-template-columns:1fr 1fr}.inspo-cookie .button{padding:.7rem .8rem;font-size:.92rem}}
+</style>
+
+<script>
+  (() => {
+    const bar = document.getElementById('InspoCookieConsent');
+    const savedChoice = localStorage.getItem('inspo_cookie_consent');
+    const privacy = window.Shopify?.customerPrivacy;
+    const shouldShow = privacy?.shouldShowBanner ? privacy.shouldShowBanner() : !savedChoice;
+    if (!savedChoice && shouldShow) bar.hidden = false;
+
+    const saveConsent = (accepted) => {
+      localStorage.setItem('inspo_cookie_consent', accepted ? 'accepted' : 'denied');
+      if (privacy?.setTrackingConsent) {
+        privacy.setTrackingConsent({ analytics: accepted, marketing: accepted, preferences: accepted, sale_of_data: accepted }, () => { bar.hidden = true; });
+      } else {
+        bar.hidden = true;
+      }
+    };
+
+    bar.querySelector('[data-cookie-accept]').addEventListener('click', () => saveConsent(true));
+    bar.querySelector('[data-cookie-deny]').addEventListener('click', () => saveConsent(false));
+  })();
+</script>
