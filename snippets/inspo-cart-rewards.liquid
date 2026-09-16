@@ -195,7 +195,7 @@
     const handleCardAdd = async (event) => {
       const addButton = event.currentTarget;
       const form = addButton?.closest('form[action*="/cart/add"]');
-      if (!form || form.closest('product-form')) return;
+      if (!form || !form.closest('.inspo-product-card')) return;
       event.preventDefault();
       let variantId = form.querySelector('[name="id"]')?.value;
       if (!variantId) {
@@ -229,7 +229,7 @@
       }
     };
 
-    document.querySelectorAll('form[action*="/cart/add"]:not(product-form form) [type="submit"]').forEach((button) => {
+    document.querySelectorAll('.inspo-product-card form[action*="/cart/add"] [type="submit"]').forEach((button) => {
       button.addEventListener('click', handleCardAdd);
     });
 
