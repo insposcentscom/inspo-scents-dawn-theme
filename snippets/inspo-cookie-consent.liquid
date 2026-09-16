@@ -8,8 +8,8 @@
     <p>We use cookies to operate the store, understand visits, and improve your experience. Read our <a href="/policies/privacy-policy">Privacy Policy</a>.</p>
   </div>
   <div class="inspo-cookie__actions">
-    <button type="button" class="button button--secondary" data-cookie-deny>Deny optional cookies</button>
-    <button type="button" class="button" data-cookie-accept>Accept cookies</button>
+      <button type="button" class="button button--secondary" data-cookie-deny onclick="window.inspoCookieConsent(false)">Deny optional cookies</button>
+      <button type="button" class="button" data-cookie-accept onclick="window.inspoCookieConsent(true)">Accept cookies</button>
   </div>
 </aside>
 
@@ -24,6 +24,7 @@
     try { savedChoice = localStorage.getItem('inspo_cookie_consent') || ''; } catch (error) {}
     if (!savedChoice) savedChoice = document.cookie.match(/(?:^|; )inspo_cookie_consent=([^;]*)/)?.[1] || '';
     const privacy = window.Shopify?.customerPrivacy;
+    bar.dataset.ready = 'true';
     if (!savedChoice) bar.hidden = false;
 
     const saveConsent = (accepted) => {
@@ -36,7 +37,6 @@
       }
     };
 
-    bar.querySelector('[data-cookie-accept]').addEventListener('click', () => saveConsent(true));
-    bar.querySelector('[data-cookie-deny]').addEventListener('click', () => saveConsent(false));
+    window.inspoCookieConsent = saveConsent;
   })();
 </script>
