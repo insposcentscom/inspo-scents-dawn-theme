@@ -193,7 +193,7 @@
     });
 
     const handleCardAdd = async (event) => {
-      const addButton = event.currentTarget;
+      const addButton = event.target.closest('.inspo-product-card form[action*="/cart/add"] [type="submit"]');
       const form = addButton?.closest('form[action*="/cart/add"]');
       if (!form || !form.closest('.inspo-product-card')) return;
       event.preventDefault();
@@ -229,9 +229,7 @@
       }
     };
 
-    document.querySelectorAll('.inspo-product-card form[action*="/cart/add"] [type="submit"]').forEach((button) => {
-      button.addEventListener('click', handleCardAdd);
-    });
+    document.addEventListener('click', handleCardAdd, true);
 
     if (window.subscribe && window.PUB_SUB_EVENTS?.cartUpdate) {
       window.subscribe(window.PUB_SUB_EVENTS.cartUpdate, (event) => {
